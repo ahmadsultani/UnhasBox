@@ -1,7 +1,7 @@
 import { Route } from "react-router-dom";
 import { IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { Home, _404 } from "./pages";
+import { Home, Login, _404 } from "./pages";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -33,6 +33,9 @@ const App: React.FC = () => (
       <IonRouterOutlet>
         <Route exact path="/">
           <Home />
+        </Route>
+        <Route exact path="/login">
+          <Login />
         </Route>
         <Route component={_404} />
       </IonRouterOutlet>
