@@ -21,10 +21,8 @@ export const _404: React.FC = () => {
         <section className="not-found">
           <h1 className="not-found__heading">Oops! Page Not Found</h1>
           <div className="not-found__description">
-            <p className="not-found__paragraph">
-              We're sorry, but the page you're looking for cannot be found.
-            </p>
-            <p className="not-found__paragraph">
+            <p>We're sorry, but the page you're looking for cannot be found.</p>
+            <p>
               You can go back to the homepage or contact support for assistance.
             </p>
           </div>
