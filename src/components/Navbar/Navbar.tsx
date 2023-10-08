@@ -22,7 +22,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   return (
     <IonHeader>
-      <IonToolbar>
+      <IonToolbar className="ion-padding-start">
         <IonButtons slot="start">
           {hasBackButton && (
             <IonButton onClick={onBackClick}>
