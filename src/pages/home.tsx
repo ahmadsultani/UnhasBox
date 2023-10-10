@@ -1,6 +1,11 @@
-import { Hero } from "../components/Hero";
-
-import { MainLayout } from "../layouts";
+import {
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+} from "@ionic/react";
+import { Navbar } from "../components/Navbar";
 
 export const Home: React.FC = () => {
   return (
