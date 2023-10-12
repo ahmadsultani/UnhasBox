@@ -7,7 +7,7 @@ import "../styles/_404.css";
 export const _404: React.FC = () => {
   return (
     <MainLayout>
-      <IonCol className="ion-padding not-found">
+      <IonCol className="not-found">
         <IonText className="not-found__heading">Oops! Page Not Found</IonText>
         <IonText className="not-found__description" color="dark">
           <p>We're sorry, but the page you're looking for cannot be found.</p>
