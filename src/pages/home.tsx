@@ -2,7 +2,7 @@ import { IonHeader, IonTitle, IonToolbar } from "@ionic/react";
 
 import { PrimaryButton, OutlinedButton } from "../components/Button";
 
-import MainLayout from "../layouts/MainLayout";
+import { MainLayout } from "../layouts";
 
 export const Home: React.FC = () => {
   const handleButtonClick = () => {

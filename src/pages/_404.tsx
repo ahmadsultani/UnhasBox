@@ -1,6 +1,6 @@
 import { IonButton, IonCol, IonText } from "@ionic/react";
 
-import MainLayout from "../layouts/MainLayout";
+import { MainLayout } from "../layouts";
 
 import "../styles/_404.css";
 
