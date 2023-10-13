@@ -1,30 +1,11 @@
-import { IonHeader, IonTitle, IonToolbar } from "@ionic/react";
-
-import { PrimaryButton, OutlinedButton } from "../components/Button";
+import { Hero } from "../components/Hero";
 
 import { MainLayout } from "../layouts";
 
 export const Home: React.FC = () => {
-  const handleButtonClick = () => {
-    console.log("Tombol Kembali diklik");
-  };
   return (
     <MainLayout>
-      <PrimaryButton onClick={handleButtonClick} fullWidth={false} size="small">
-        Button
-      </PrimaryButton>
-      <OutlinedButton
-        onClick={handleButtonClick}
-        fullWidth={false}
-        size="small"
-      >
-        Button
-      </OutlinedButton>
-      <IonHeader collapse="condense">
-        <IonToolbar>
-          <IonTitle size="large">Blank</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+      <Hero />
     </MainLayout>
   );
 };
