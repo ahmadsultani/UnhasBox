@@ -1,18 +1,11 @@
-import {
-  IonContent,
-} from "@ionic/react";
-import { Navbar } from "../components/Navbar";
 import { Hero } from "../components/Hero";
 
+import { MainLayout } from "../layouts";
 
 export const Home: React.FC = () => {
-  const handleButtonClick = () => {
-    console.log("Tombol Kembali diklik");
-  }
   return (
-    <IonContent>
-      <Navbar title="Home"/>
+    <MainLayout>
       <Hero />
-    </IonContent>
+    </MainLayout>
   );
 };

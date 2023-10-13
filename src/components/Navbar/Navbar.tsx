@@ -1,37 +1,36 @@
+import React, { useEffect, useState } from "react";
 import {
-  IonButton,
-  IonButtons,
   IonHeader,
-  IonIcon,
+  IonMenuButton,
+  IonText,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { arrowBack } from "ionicons/icons";
-import React from "react";
 
-interface NavbarProps {
-  title: string;
-  hasBackButton?: boolean;
-  onBackClick?: () => void;
-}
+import "../../styles/navbar.css";
+import { Navitems } from "./Navitems";
 
-export const Navbar: React.FC<NavbarProps> = ({
-  title,
-  hasBackButton,
-  onBackClick,
-}) => {
+export const Navbar: React.FC = () => {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      setWindowWidth(window.innerWidth);
+    });
+  }, []);
+
   return (
     <IonHeader>
-      <IonToolbar className="ion-padding-start">
-        <IonButtons slot="start">
-          {hasBackButton && (
-            <IonButton onClick={onBackClick}>
-              <IonIcon icon={arrowBack} />
-            </IonButton>
-          )}
-        </IonButtons>
-        <IonTitle>{title}</IonTitle>
-      </IonToolbar>
+      {windowWidth <= 1024 ? (
+        <IonToolbar className="ion-padding-horizontal">
+          <IonTitle slot="start">
+            <IonText color="dark navbar__title">UnhasBox</IonText>
+          </IonTitle>
+          <IonMenuButton slot="end"></IonMenuButton>
+        </IonToolbar>
+      ) : (
+        <Navitems />
+      )}
     </IonHeader>
   );
 };

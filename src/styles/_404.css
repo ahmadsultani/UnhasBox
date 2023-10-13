@@ -4,9 +4,11 @@
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  font-size: 16px;
   gap: 20px;
   height: 100%;
   margin-top: -20px;
+  padding: 28px;
 }
 
 .not-found__heading {
@@ -16,4 +18,11 @@
 
 .not-found__description {
   font-size: 1.2em;
+  line-height: 140%;
+}
+
+@media screen and (max-width: 768px) {
+  .not-found {
+    font-size: 12px;
+  }
 }
