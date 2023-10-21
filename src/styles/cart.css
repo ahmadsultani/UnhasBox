@@ -1,0 +1,17 @@
+.cart__icon {
+    font-size: 100px;
+    color: grey;
+}
+
+p {
+    color: grey;
+    max-width: 360px;
+}
+
+.cart-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
