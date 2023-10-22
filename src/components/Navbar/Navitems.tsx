@@ -7,7 +7,13 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { heart, cart } from "ionicons/icons";
+import {
+  heart,
+  cart,
+  cubeOutline,
+  newspaperOutline,
+  homeOutline,
+} from "ionicons/icons";
 import React from "react";
 
 export const Navitems: React.FC = () => {
@@ -61,7 +67,7 @@ export const Navitems: React.FC = () => {
 };
 
 export const navItems = [
-  { label: "Home", href: "/" },
-  { label: "Product", href: "/product" },
-  { label: "Blog", href: "/blog" },
+  { label: "Home", href: "/", icon: homeOutline },
+  { label: "Product", href: "/product", icon: cubeOutline },
+  { label: "Blog", href: "/blog", icon: newspaperOutline },
 ];
