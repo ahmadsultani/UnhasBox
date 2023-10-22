@@ -8,7 +8,7 @@ export const EmptyStateCart: React.FC = () => {
         <IonIcon className="cart__icon" icon={cartOutline}></IonIcon>
         <h4><b>Your Cart is Empty</b></h4>
         <p className="cart__text ion-margin-bottom">You haven't added anything to your cart. We're sure you'll find something in our store</p>
-        <IonButton shape="round" className="ion-margin-top">Shop Now</IonButton>
+        <IonButton shape="round" className="ion-margin-top" href="/product">Shop Now</IonButton>
       </IonCol>
   );
 };
