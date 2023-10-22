@@ -4,6 +4,12 @@
   box-sizing: border-box;
 }
 
+input {
+  border: none;
+  outline: none;
+  background: none;
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
