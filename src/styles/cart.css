@@ -3,7 +3,7 @@
     color: grey;
 }
 
-p {
+.cart__text {
     color: grey;
     max-width: 360px;
 }
