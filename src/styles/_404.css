@@ -21,6 +21,29 @@
   line-height: 140%;
 }
 
+.not-found__link-container {
+  display: flex;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.not-found__link {
+  font-size: 1em;
+  text-transform: uppercase;
+  background-color: var(--ion-color-primary);
+  text-decoration: none;
+  border-radius: 32px;
+  padding: 16px 32px;
+}
+
+.not-found__link-clear {
+  font-size: 1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 32px;
+  padding: 16px 32px;
+}
+
 @media screen and (max-width: 768px) {
   .not-found {
     font-size: 12px;
