@@ -5,7 +5,9 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
+  IonItem,
   IonMenu,
+  IonSearchbar,
   IonText,
   IonTitle,
   IonToolbar,
@@ -22,14 +24,9 @@ interface SidebarProps {
 
 export const Sidebar: React.FC<SidebarProps> = ({ contentId }) => {
   return (
-    <IonMenu contentId={contentId} menuId="sidebar">
+    <IonMenu contentId={contentId} side="end">
       <IonHeader>
-        <IonToolbar className="ion-padding-horizontal">
-          <IonTitle slot="start">
-            <IonText color="dark">
-              <b>UnhasBox</b>
-            </IonText>
-          </IonTitle>
+        <IonToolbar className="ion-padding-horizontal" slot="start">
           <IonButtons slot="end">
             <IonButton color="primary" fill="clear" href="/favorite">
               <IonIcon slot="icon-only" icon={heart} />
@@ -41,25 +38,36 @@ export const Sidebar: React.FC<SidebarProps> = ({ contentId }) => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding ion-justify-content-between sidebar">
+      <IonContent
+        fullscreen
+        className="ion-padding ion-justify-content-between sidebar"
+      >
         <IonCol className="sidebar__container">
-          <section>
-            {navItems.map((item, index) => (
-              <IonButton
-                key={index}
-                href={item.href}
-                color="dark"
-                fill="clear"
-                className=" ion-padding-horizontal sidebar__sidebaritem"
-                expand="full"
-                slot="start"
-              >
-                <IonText>
-                  <p>{item.label}</p>
-                </IonText>
-              </IonButton>
-            ))}
-          </section>
+          <IonButtons>
+            <IonCol className="sidebar__btn-container">
+              <IonSearchbar
+                placeholder="Search here"
+                autoFocus
+                className="sidebar__searchbar"
+              />
+              {navItems.map((item, index) => (
+                <IonButton
+                  key={index}
+                  href={item.href}
+                  color="dark"
+                  fill="clear"
+                  expand="full"
+                >
+                  <section className="sidebar__sidebaritem ion-padding-end">
+                    <IonIcon slot="start" icon={item.icon} />
+                    <IonText>
+                      <p style={{ textAlign: "left" }}>{item.label}</p>
+                    </IonText>
+                  </section>
+                </IonButton>
+              ))}
+            </IonCol>
+          </IonButtons>
 
           <section>
             <IonButton
