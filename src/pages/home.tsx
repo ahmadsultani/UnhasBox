@@ -10,33 +10,27 @@ import {
   IonRow,
 } from "@ionic/react";
 import { Navbar } from "../components/Navbar";
+import { MainLayout } from "../layouts";
 
 export const Home: React.FC = () => {
   return (
-    <IonPage>
-      <Navbar title="Home" />
-      <IonHeader collapse="condense">
-        <IonToolbar>
-          <IonTitle size="large">Blank</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+    <MainLayout>
       <IonContent fullscreen className="ion-text-center">
-      <IonGrid>
-        <IonRow>
-          <IonCol>
-            <h1 className="ion-margin-bottom">Welcome to Our Website</h1>
-            <p className="ion-margin-bottom">Discover amazing products and services.</p>
-            <IonButton routerLink="/signup" className="ion-margin" >
-              Get Started
-            </IonButton>
-            <IonButton routerLink="/signup" >
-              Get Started
-            </IonButton>
-          </IonCol>
-        </IonRow>
-      </IonGrid>
-      
+        <IonGrid>
+          <IonRow>
+            <IonCol>
+              <h1 className="ion-margin-bottom">Welcome to Our Website</h1>
+              <p className="ion-margin-bottom">Discover amazing products and services.</p>
+              <IonButton routerLink="/signup" className="ion-margin" >
+                Get Started
+              </IonButton>
+              <IonButton routerLink="/signup" >
+                Get Started
+              </IonButton>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       </IonContent>
-    </IonPage>
+    </MainLayout>
   );
 };
