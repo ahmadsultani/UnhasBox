@@ -6,11 +6,8 @@ import { ProductCard }  from "../components/ProductCard";
 import { products } from "../data/fakeProductData";
 
 import "../styles/product.css";
-import { useMediaQuery } from "../hooks/useMediaQuery";
 
 export const Product: React.FC = () => {
-  const isMobile = useMediaQuery("(max-width: 768px)");
-
   return (
     <MainLayout>
       <section className="product">
