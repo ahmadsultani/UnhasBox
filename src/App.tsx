@@ -1,7 +1,7 @@
 import { Route } from "react-router-dom";
 import { IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { Home, Login, Signup, Cart, Favorite, _404, Blog } from "./pages";
+import { Home, Login, Signup, Cart, Favorite, _404, Blog, Product } from "./pages";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -49,6 +49,10 @@ const App: React.FC = () => (
         <Route exact path="/blog">
           <Blog />
         </Route>
+        <Route exact path = "/product">
+          <Product />
+        </Route>
+          <_404 />
         <Route component={_404} />
       </IonRouterOutlet>
     </IonReactRouter>
