@@ -1,13 +1,14 @@
 import { IonButton, IonChip, IonIcon, IonText } from "@ionic/react";
 
-import { MainLayout } from "../layouts";
-import { BlogCard } from "../components/Blog";
+import { MainLayout } from "@/layouts/MainLayout";
+import { BlogCard } from "@/components/Blog";
 
-import { blogs } from "../data/fakeBlogData";
+import { blogs } from "@/data/fakeBlogData";
 
-import "../styles/blog.css";
-import { useMediaQuery } from "../hooks/useMediaQuery";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { paperPlane } from "ionicons/icons";
+
+import "@/styles/blog.css";
 
 export const Blog: React.FC = () => {
   const isMobile = useMediaQuery("(max-width: 768px)");
