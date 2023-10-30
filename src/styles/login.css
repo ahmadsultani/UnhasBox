@@ -3,28 +3,74 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100vw;
+  width: 100p;
   height: 100%;
+  background-color: aliceblue;
+  border-radius: 16px;
 }
 
 .login__container {
   display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 0px;
+  gap: 30px;
+  margin: 50px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  background-color: white;
+  border-radius: 16px;
+}
+
+.login__container-image {
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 500px;
-  padding: 46px 16px;
-  gap: 32px;
-  margin: auto;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  width: 50%;
 }
 
-.login__title {
-  font-size: 28px;
-  font-weight: 600;
-  padding: 0;
-  margin: 0;
+.login__container-image-image {
+  display: flex;
+  width: fit-content;
+}
 
+.login__container-text{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 50%;
+  width: fit-content;
+  background-color: white;
+}
+
+.login__title-1 {
+  display: flex;
+  font-size: 19px;
+  font-family: sans-serif;
+  margin: 0;
+  color: black;
+}
+
+.login__title-2 {
+  display: flex;
+  font-size: 19px;
+  font-weight: bold;
+  font-family: Verdana;
+  margin-bottom: 20px;
+  line-height: 1.5;
+  color: black;
+}
+
+.login__title-3 {
+  font-size: 28px;
+  font-weight: 800;
+  font-family: sans-serif;
+  padding: 10px;
+  margin: 5px 5px 10px 5px;
+  margin-top: 10px;
+  line-height: 2;
+  color: #407BFF;
 }
 
 .login__main {
@@ -33,16 +79,21 @@
   justify-content: center;
   width: 100%;
   gap: 16px;
+  padding-right: 15px;
+  padding-left: 20px;
 }
 
 .login__inputs {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  height: 120px;
+  gap: 15px;
 }
 
 .login__inputs-input {
-  width: 100%;
+  width: 290px;
+  color: rgb(21, 21, 21);
+  font-size: 15px;
 }
 
 .login__forgot {
@@ -55,7 +106,8 @@
   background-color: var(--color-primary);
   color: white;
   font-size: 16px;
-  font-weight: bold;
+  font-weight:bold;
+  font-family: sans-serif;
   margin: 12px 0;
 }
 

@@ -1,4 +1,4 @@
-import { IonButton, IonContent, IonInput, IonPage } from "@ionic/react";
+import { IonButton, IonContent, IonImg, IonInput, IonPage } from "@ionic/react";
 
 import { useState } from "react";
 
@@ -22,31 +22,49 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <MainLayout>
       <div className="login">
         <section className="login__container">
-          <header>
-            <h1 className="ion-text-center login__title">Log in to your account</h1>
-          </header>
-          <main className="login__main">
-            <section className="login__inputs">
-              <IonInput fill="outline" type="text" label="Email Address" labelPlacement="floating" className="login__inputs-input" onIonChange={(e) => setEmail(e.detail.value!)} />
-              <IonInput fill="outline" type="password" label="Password" labelPlacement="floating" className="login__inputs-input" onIonChange={(e) => setPassword(e.detail.value!)} />
-            </section>
-            <section className="login__forgot">
-              <a href="/forgot-password">Forgot Password?</a>
-            </section>
-            <IonButton expand="full" className="login__button" onClick={handleLogin}>
-              Login
-            </IonButton>
-            <section className="login__signup">
-              <p>
-                Don't have an account? <a href="/signup">Sign Up</a>
-              </p>
-            </section>
-          </main>
+          <section className="login__container-image">
+            <IonImg src="https://stories.freepiklabs.com/api/vectors/tablet-login/pana/render?color=407BFFFF&background=complete&hide=" 
+                    className="login__container-image-image"/>
+          </section>
+          <section className="login__container-text">
+            <p className="login__title-1">Hello !</p>
+            <p className="login__title-2">Welcome Back</p>
+            <header>
+              <h1 className="ion-text-center login__title-3">Login</h1>
+            </header>
+            <main className="login__main">
+              <section className="login__inputs">
+                <IonInput 
+                fill="outline" 
+                type="text" 
+                label="Email Address" 
+                labelPlacement="floating" 
+                className="login__inputs-input" 
+                onIonChange={(e) => setEmail(e.detail.value!)} />
+                <IonInput 
+                fill="outline" 
+                type="password" 
+                label="Password" 
+                labelPlacement="floating" 
+                className="login__inputs-input" 
+                onIonChange={(e) => setPassword(e.detail.value!)} />
+              </section>
+              <section className="login__forgot">
+                <a hrefLang="/forgot-password">Forgot Password?</a>
+              </section>
+              <IonButton expand="block" className="login__button" onClick={handleLogin}>
+                Login
+              </IonButton>
+              <section className="login__signup">
+                <p>
+                  Don't have an account? <a hrefLang="/signup">Sign Up</a>
+                </p>
+              </section>
+            </main>
+          </section>
         </section>
       </div>
-    </MainLayout>
   );
 };
