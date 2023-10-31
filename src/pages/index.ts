@@ -5,4 +5,5 @@ export * from "./signup";
 export * from "./cart";
 export * from "./favorite";
 export * from "./blog";
-export * from "./product";
+export * from "./product/page";
+export * from "./product/[id]/page";
