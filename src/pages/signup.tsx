@@ -1,4 +1,4 @@
-import { IonPage, IonContent, IonInput, IonButton, IonItem, IonLabel, IonIcon, IonText } from "@ionic/react";
+import { IonPage, IonContent, IonInput, IonButton, IonItem, IonLabel, IonIcon, IonText, IonImg } from "@ionic/react";
 
 import { useState } from "react";
 import { MainLayout } from "../layouts";
@@ -18,11 +18,17 @@ export const Signup: React.FC = () => {
   };
 
   return (
-<MainLayout>
       <div className="signup">
         <section className="signup__container">
+          <section className="signup__container-image">
+            <IonImg src='https://stories.freepiklabs.com/api/vectors/sign-up/rafiki/render?color=&background=complete&hide='
+                    className="signup__container-image-image"/>
+          </section>
+          <section className="signup__container-text">
+          <p className="signup__title-1">Let's</p>
+          <p className="signup__title-2">Create Account</p>
           <header>
-            <h1 className="ion-text-center signup__title">Create account</h1>
+            <h1 className="ion-text-center signup__title-3">Sign Up</h1>
           </header>
           <main className="signup__main">
             <section className="signup__inputs">
@@ -61,8 +67,8 @@ export const Signup: React.FC = () => {
                   onIonChange={(e) => setPassword(e.detail.value!)}
                   />
             </section>
-            <IonText className="ion-text-center">
-              I've read and agree to the <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>
+            <IonText className="ion-text-center signup__text">
+              I've read and agree to the <a hrefLang="/terms">Terms of Service</a> and <a hrefLang="/privacy">Privacy Policy</a>
             </IonText>
             <IonButton
               expand="full"
@@ -72,8 +78,8 @@ export const Signup: React.FC = () => {
               sign up
             </IonButton>
           </main>
+          </section>
         </section>
       </div>
-    </MainLayout>
   );
 };
