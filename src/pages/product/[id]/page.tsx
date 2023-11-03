@@ -11,6 +11,8 @@ import { ProductCard } from "@/components/ProductCard";
 
 import { products } from "@/data/fakeProductData";
 
+import { parserCurrency } from "@/utils/parsercurrency";
+
 export const ProductDetail: React.FC = () => {
   const [quantity, setQuantity] = useState(1);
 
@@ -54,23 +56,23 @@ export const ProductDetail: React.FC = () => {
                       category-2
                     </IonChip>
                   </section>
-                  {/* <IonGrid> */}
-                    <IonRow className="product-detail__header-info">
-                      <section className="product-detail__header-info-container">
-                        <IonIcon icon={checkmarkCircle} color="success" className="product-detail__header-info-icon" />
-                        <p>Stok Tersedia</p>
-                      </section>
-                      <section className="product-detail__header-info-container">
-                        <IonIcon icon={bagHandle} color="dark" className="product-detail__header-info-icon" />
-                        <p>Terjual 70+</p>
-                      </section>
-                      <section className="product-detail__header-info-container">
-                        <IonIcon icon={star} color="warning" className="product-detail__header-info-icon" />
-                        <p>4.5 (1.250 rating)</p>
-                      </section>
-                    </IonRow>
-                  {/* </IonGrid> */}
-                  <IonText className="product-detail__header-price">Rp5.000.000</IonText>
+                  <IonRow className="product-detail__header-info">
+                    <section className="product-detail__header-info-container">
+                      <IonIcon icon={checkmarkCircle} color="success" className="product-detail__header-info-icon" />
+                      <p>Stok Tersedia</p>
+                    </section>
+                    <section className="product-detail__header-info-container">
+                      <IonIcon icon={bagHandle} color="dark" className="product-detail__header-info-icon" />
+                      <p>Terjual 70+</p>
+                    </section>
+                    <section className="product-detail__header-info-container">
+                      <IonIcon icon={star} color="warning" className="product-detail__header-info-icon" />
+                      <p>4.5 (1.250 rating)</p>
+                    </section>
+                  </IonRow>
+                  <IonText className="product-detail__header-price">
+                    {parserCurrency(5000000)}
+                  </IonText>
                 </header>
                 <main className="product-detail__content">
                   <h4 className="product-detail__content-detail">Detail</h4>
@@ -81,7 +83,7 @@ export const ProductDetail: React.FC = () => {
                 </main>
               </div>
               <footer className="product-detail__content-footer">
-                <p className="product-detail__content-footer-title">SHERE</p>
+                <p className="product-detail__content-footer-title">SHARE</p>
                 <section className="product-detail__content-footer-icon">
                   <IonIcon icon={logoFacebook} className="product-detail__content-footer-icon-item" />
                   <IonIcon icon={logoInstagram} className="product-detail__content-footer-icon-item" />
@@ -93,7 +95,9 @@ export const ProductDetail: React.FC = () => {
           <div className="product-detail__price">
             <IonText className="product-detail__price-title">
               <p>Subtotal</p>
-              <h3 className="product-detail__price-sum">Rp{500000 * quantity}</h3>
+              <h3 className="product-detail__price-sum">
+                {parserCurrency(5000000 * quantity)}
+              </h3>
             </IonText>
             <section className="product-detail__price-quantity">
               <button color="primary" className="product-detail__price-quantity-button" onClick={handleMinusClick}>
