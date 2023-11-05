@@ -11,6 +11,7 @@ import {
   Blog,
   BlogDetail,
   Product,
+  ProductDetail,
 } from "./pages";
 
 /* Core CSS required for Ionic components to work properly */
@@ -64,6 +65,9 @@ const App: React.FC = () => (
         </Route>
         <Route exact path="/product">
           <Product />
+        </Route>
+        <Route path="/product/:id">
+          <ProductDetail />
         </Route>
         <_404 />
         <Route component={_404} />
