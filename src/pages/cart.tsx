@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { CartCard } from "../components/Cart/CartCard";
 import { MainLayout } from "../layouts";
-import { products } from "../data/fakeProductData";
+import { fakeCartData } from "../data/fakeCartData";
 import { EmptyStateCart } from "../components/Cart/EmptyStateCart"; 
 import { IonButton, IonText } from '@ionic/react';
 import "../styles/cart.css";
+import { parserCurrency } from "@/utils/parsercurrency";
 
 export const Cart: React.FC = () => {
-  const initialProduct = products[0];
+  const product = fakeCartData.products[0];
   const [quantity, setQuantity] = useState(1); 
-  const [cartEmptyState] = useState(false); 
+  const [isCartEmpty, setIsCartEmpty] = useState(fakeCartData.products.length === 0); 
 
   const increaseQuantity = () => {
     setQuantity(quantity + 1);
@@ -21,48 +22,52 @@ export const Cart: React.FC = () => {
     }
   };
 
-  const totalPrice = (500000 * quantity);
+  const totalPrice = parserCurrency(product.price * quantity);
+
+  const onRemoveFromCart = () => {
+    setIsCartEmpty(true);
+  };
 
   return (
     <MainLayout>
-      {cartEmptyState ? (
+      {isCartEmpty ? (
         <EmptyStateCart />
       ) : (
+            <><section>
+            <IonText color="dark">
+              <h1 className='ion-text-center cart__title'>Your Order</h1>
+            </IonText>
+            </section>
             <section className='cart__card'>
-            <section>
-              <CartCard
-                key={initialProduct.id}
-                title={initialProduct.title}
-                price={initialProduct.price}
-                image={initialProduct.image}
-                quantity={quantity}
-                onIncreaseQuantity={increaseQuantity}
-                onDecreaseQuantity={decreaseQuantity}
-                onMoveToFavorites={() => {
-
-                } } onRemoveFromCart={function (): void {
-                  throw new Error('Function not implemented.');
-                } } />
-            </section>
-            <section>
-              <div className="cart__card-summary">
-                <IonText className="cart__card-summary-header">
-                  <h2>
-                    <b>Summary</b>
-                  </h2>
-                </IonText>
-                <IonText className="cart__card-total-orders">
-                  <p>Total Orders</p>
-                  <p>
-                    <b>Rp {totalPrice}</b>
-                  </p>
-                </IonText>
-                <IonButton expand="full" size="small">
-                  Buy
-                </IonButton>
-              </div>
-            </section>
-          </section>
+              <section className='cart__card-product-card'>
+                <CartCard
+                  key={product.id}
+                  title={product.title}
+                  price={product.price}
+                  image={product.image}
+                  quantity={quantity}
+                  onIncreaseQuantity={increaseQuantity}
+                  onDecreaseQuantity={decreaseQuantity}
+                  onMoveToFavorites={() => { } }
+                  onRemoveFromCart={onRemoveFromCart} />
+              </section>
+                <div className="cart__card-summary">
+                  <IonText className="cart__card-summary-header">
+                    <h2>
+                      <b>Summary</b>
+                    </h2>
+                  </IonText>
+                  <IonText className="cart__card-total-orders">
+                    <p>Total Orders</p>
+                    <p>
+                      <b>{totalPrice}</b>
+                    </p>
+                  </IonText>
+                  <IonButton expand="full" size="small">
+                    Buy
+                  </IonButton>
+                </div>
+            </section></>
         )
       } 
     </MainLayout>
