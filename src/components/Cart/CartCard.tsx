@@ -6,12 +6,15 @@ import {
   IonItem,
   IonText,
 } from "@ionic/react";
+import { fakeCartData } from "../../data/fakeCartData";
 import "../../styles/cart.css";
 import { heart, trash } from "ionicons/icons";
+import { parserCurrency } from "@/utils/parsercurrency";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 interface CartCardProps {
   title: string;
-  price: string;
+  price: number;
   image: string;
   onMoveToFavorites: () => void;
   quantity: number;
@@ -30,10 +33,19 @@ export const CartCard: React.FC<CartCardProps> = ({
   onDecreaseQuantity,
   onRemoveFromCart,
 }) => {
-  const totalPrice = (parseFloat(price) * quantity).toFixed(3);
+  const Subtotal = parserCurrency(price * quantity);
+  
+  const handleRemoveFromCart = () => {
+    if (fakeCartData.products.length - 1 === 0) {
+      onRemoveFromCart();
+    } else {
+      onRemoveFromCart();
+    }
+  };
+
+  const isMobile = useMediaQuery("(max-width: 425px)");
 
   return (
-      <section>
         <IonCard className="cart__card-product">
           <IonItem className="cart__card-product-item">
             <IonImg
@@ -43,8 +55,8 @@ export const CartCard: React.FC<CartCardProps> = ({
             />
             <IonText className="cart__card-product-text">
               <h3><b>{title} </b></h3>
-              <p>Price: Rp{price}</p>
-              <h4><b>Subtotal: Rp{totalPrice}</b></h4>
+              <p>Price: {parserCurrency(price)}</p>
+              <h4><b>Subtotal: {Subtotal}</b></h4>
             </IonText>
           </IonItem>
           <IonItem>
@@ -55,12 +67,15 @@ export const CartCard: React.FC<CartCardProps> = ({
                 color="medium"
                 className="ion-text-capitalize"
               >
-                {/* <IonIcon icon={heart} onClick={onMoveToFavorites}/> */}
-                Move to Favorite
+              {isMobile ? (
+                <IonIcon slot="icon-only" icon={heart} />
+              ) : (
+                <IonText>Move to Favorite</IonText>
+              )}
               </IonButton>
               <p>|</p>
-              <IonButton onClick={onRemoveFromCart} fill="clear" color="medium">
-                <IonIcon icon={trash} onClick={onRemoveFromCart} />
+              <IonButton onClick={handleRemoveFromCart} fill="clear" color="medium">
+                <IonIcon icon={trash} onClick={handleRemoveFromCart} />
               </IonButton>
               <div className="cart__card-quantity">
                 <IonButton
@@ -84,6 +99,5 @@ export const CartCard: React.FC<CartCardProps> = ({
             </footer>
           </IonItem>
         </IonCard>
-      </section>
   );
 };
