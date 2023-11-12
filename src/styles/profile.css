@@ -2,6 +2,10 @@
   font-size: 16px;
 }
 
+.profile__container {
+  padding: 2em;
+}
+
 .profile__header {
   display: flex;
   align-items: center;
@@ -42,6 +46,9 @@
 .profile__section-title {
   font-size: 1.6em;
   font-weight: 600;
+  padding-left: 0.5em;
+  border-left: 4px solid var(--ion-color-primary);
+  margin-bottom: 1em;
 }
 
 .profile__form-container {
@@ -51,5 +58,14 @@
   align-items: end;
   gap: 1em;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  border-radius: 16px;
+}
+
+@media (max-width: 768px) {
+  .profile {
+    font-size: 12px;
+  }
+
+  .profile__container {
+    padding-inline: 0;
+  }
 }
