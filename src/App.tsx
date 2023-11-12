@@ -12,6 +12,7 @@ import {
   BlogDetail,
   Product,
   ProductDetail,
+  Profile,
 } from "./pages";
 
 /* Core CSS required for Ionic components to work properly */
@@ -69,7 +70,9 @@ const App: React.FC = () => (
         <Route path="/product/:id">
           <ProductDetail />
         </Route>
-        <_404 />
+        <Route path="/profile">
+          <Profile />
+        </Route>
         <Route component={_404} />
       </IonRouterOutlet>
     </IonReactRouter>
