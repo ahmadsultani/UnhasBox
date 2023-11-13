@@ -71,6 +71,7 @@
   padding: 16px 0;
   cursor: pointer;
   text-decoration: none;
+  text-align: left;
   color: var(--ion-color-dark);
 }
 
