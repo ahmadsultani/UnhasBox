@@ -4,5 +4,8 @@ export const parserCurrency = (amount: number): string => {
     currency: 'IDR',
     minimumFractionDigits: 0,
   });
-  return formatter.format(amount);
+
+  const formattedAmount = formatter.format(amount).replace(/\s/g, '').replace('Rp', '');
+
+  return `Rp${formattedAmount}`;
 };
