@@ -21,7 +21,7 @@ export const Hero: React.FC = () => {
         </IonText>
         <div className='hero__text-buttons'>
           <IonButton fill="solid" color='primary' className="hero__text-button">Explore Product</IonButton>
-          <IonButton fill="outline" color='light' className="hero__text-button">Explore Product</IonButton>
+          <IonButton fill="outline" color='light' className="hero__text-button">Signup</IonButton>
         </div>
       </section>  
     </div>
