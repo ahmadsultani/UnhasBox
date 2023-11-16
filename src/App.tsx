@@ -13,6 +13,7 @@ import {
   Product,
   ProductDetail,
   Profile,
+  SuccessCheckout,
 } from "./pages";
 
 /* Core CSS required for Ionic components to work properly */
@@ -36,7 +37,6 @@ import "./theme/variables.css";
 
 /* Global CSS */
 import "./styles/globals.css";
-import { SuccessCheckout } from "./pages/success-checkout";
 
 setupIonicReact();
 
@@ -74,7 +74,7 @@ const App: React.FC = () => (
         <Route path="/profile">
           <Profile />
         </Route>
-        <Route exact path = "/success-checkout">
+        <Route exact path="/success-checkout">
           <SuccessCheckout />
         </Route>
         <_404 />
