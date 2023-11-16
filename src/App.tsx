@@ -34,6 +34,7 @@ import "./theme/variables.css";
 
 /* Global CSS */
 import "./styles/globals.css";
+import { SuccessCheckout } from "./pages/success-checkout";
 
 setupIonicReact();
 
@@ -64,6 +65,9 @@ const App: React.FC = () => (
         </Route>
         <Route exact path="/product">
           <Product />
+        </Route>
+        <Route exact path = "/success-checkout">
+          <SuccessCheckout />
         </Route>
         <_404 />
         <Route component={_404} />
