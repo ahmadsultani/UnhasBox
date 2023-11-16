@@ -8,3 +8,4 @@ export * from "./blog";
 export * from "./product/page";
 export * from "./product/[id]/page";
 export * from "./profile";
+export * from "./success-checkout";
