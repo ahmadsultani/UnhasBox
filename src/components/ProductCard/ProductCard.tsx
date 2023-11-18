@@ -6,13 +6,14 @@ import { Link } from "react-router-dom";
 import "../../styles/product.css";
 
 import { useState } from "react";
+import { parserCurrency } from "@/utils/parsercurrency";
 
 
 interface ProductCardProps {
   slug: string;
   title: string;
   category: string[];
-  price: string;
+  price: number;
   image: string;
   desc: string;
 }
@@ -35,7 +36,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ slug, title, category,
       <a href={`product/${slug}`} className="product__card-text">
         <p className="product__card-text-category">{category.join(" ")}</p>
         <h4 className="product__card-text-title">{title}</h4>
-        <h5 className="product__card-text-price">Rp{price}</h5>
+        <h5 className="product__card-text-price">{parserCurrency(price)}</h5>
       </a>
     </section>
   );
