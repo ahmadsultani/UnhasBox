@@ -6,7 +6,6 @@ import {
   IonInput,
   IonButton,
   IonList,
-  IonAvatar,
   IonGrid,
   IonIcon,
   IonText,
@@ -17,8 +16,16 @@ import { MainLayout } from "../layouts";
 import { add, arrowForward } from "ionicons/icons";
 
 import "@/styles/profile.css";
+import { CustomAvatar } from "@/components/CustomAvatar";
+import { getCurrentUser } from "@/services/auth";
+import { useQuery } from "@tanstack/react-query";
 
 export const Profile: React.FC = () => {
+  const { data } = useQuery({
+    queryKey: ["user"],
+    queryFn: getCurrentUser,
+  });
+
   const [selectedFile, setSelectedFile] = useState<string>();
 
   const handleFileInputChange = (e: ChangeEvent) => {
@@ -40,16 +47,11 @@ export const Profile: React.FC = () => {
           <IonRow>
             <IonCol size="12" className="ion-text-center profile__header">
               <div className="profile__avatar-input">
-                <IonAvatar className="profile__avatar">
-                  {selectedFile ? (
-                    <img src={selectedFile} alt="Profile" />
-                  ) : (
-                    <img
-                      src="https://www.gravatar.com/avatar?d=mp"
-                      alt="Profile"
-                    />
-                  )}
-                </IonAvatar>
+                <CustomAvatar
+                  src={selectedFile}
+                  name={data?.firstName}
+                  size="80px"
+                />
                 <input
                   accept="image/*"
                   type="file"
@@ -64,7 +66,7 @@ export const Profile: React.FC = () => {
                   <IonIcon icon={add} />
                 </label>
               </div>
-              <IonButton fill="clear">
+              <IonButton fill="clear" href="/logout">
                 Logout
                 <IonIcon slot="end" icon={arrowForward} />
               </IonButton>

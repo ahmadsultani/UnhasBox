@@ -37,6 +37,7 @@ import "./theme/variables.css";
 
 /* Global CSS */
 import "./styles/globals.css";
+import { Logout } from "./pages/logout";
 
 setupIonicReact();
 
@@ -77,7 +78,9 @@ const App: React.FC = () => (
         <Route exact path="/success-checkout">
           <SuccessCheckout />
         </Route>
-        <_404 />
+        <Route path="/logout">
+          <Logout />
+        </Route>
         <Route component={_404} />
       </IonRouterOutlet>
     </IonReactRouter>

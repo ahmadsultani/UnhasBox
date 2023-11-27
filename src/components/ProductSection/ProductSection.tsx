@@ -1,31 +1,78 @@
-import { IonButton } from "@ionic/react";
+import { IonButton, IonSpinner, IonText } from "@ionic/react";
 
 import { ProductCard } from "@/components/ProductCard";
 
-import { products } from "@/data/fakeProductData";
-
 import "@/styles/product-section.css";
+import { useQuery } from "@tanstack/react-query";
+import { getAllProduct } from "@/services/product";
 
 export const ProductSection: React.FC = () => {
-  const firstFourProducts = products.slice(0, 4);
+  const {
+    data: products,
+    isLoading: isLoadingProducts,
+    isError: isErrorProducts,
+  } = useQuery({
+    queryKey: ["product"],
+    queryFn: getAllProduct,
+  });
+
   return (
     <main className="product-section">
       <h1 className="product-section__title">Top Picks</h1>
-      <section className="product-section__container">
-          {firstFourProducts.map((product) => (
+      {isLoadingProducts ? (
+        <div className="empty-container">
+          <IonSpinner
+            color="primary"
+            name="crescent"
+            style={{ transform: "scale(1.4)" }}
+          />
+        </div>
+      ) : isErrorProducts ? (
+        <div className="empty-container">
+          <IonText>
+            <p
+              className="ion-text-center"
+              style={{ fontSize: "1.5em", fontWeight: 600 }}
+            >
+              Something went wrong!
+            </p>
+          </IonText>
+        </div>
+      ) : products && products.length > 0 ? (
+        <section className="product-section__container">
+          {products.slice(0, 4).map((product) => (
             <ProductCard
               key={product.id}
-              slug={product.slug}
-              title={product.title}
-              category={product.category}
+              slug={product.id}
+              title={product.name}
+              category={product.category.name}
               price={product.price}
               image={product.image}
-              desc={product.desc}
-              />
+              desc={product.description}
+            />
           ))}
-      </section>
+        </section>
+      ) : (
+        <div className="empty-container">
+          <IonText>
+            <p
+              className="ion-text-center"
+              style={{ marginTop: "3em", fontSize: "1.5em", fontWeight: 600 }}
+            >
+              No products found!
+            </p>
+          </IonText>
+        </div>
+      )}
       <section>
-        <IonButton href="/blog" fill="solid" color='primary' className="product-section__button">Explore Product</IonButton>
+        <IonButton
+          href="/blog"
+          fill="solid"
+          color="primary"
+          className="product-section__button"
+        >
+          Explore Product
+        </IonButton>
       </section>
     </main>
   );

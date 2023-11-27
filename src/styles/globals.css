@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  user-select: none;
 }
 
 input {
@@ -22,4 +23,32 @@ select:-webkit-autofill:focus {
   -webkit-text-fill-color: var(--ion-color-dark) !important;
   -webkit-background-clip: text;
   transition: background-color 5000s ease-in-out 0s;
+}
+
+fieldset {
+  border: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+.empty-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  min-height: 300px;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-screen {
+  width: 100vh;
+  height: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  z-index: 100;
+  position: fixed;
 }
