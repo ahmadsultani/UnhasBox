@@ -17,6 +17,7 @@ export const Logout: React.FC = () => {
     retry: 0,
     onSuccess: () => {
       queryClient.setQueryData(["user"], null);
+      localStorage.removeItem("user");
       successToast("Logout succeed, see you!");
     },
     onError: (error) => {
