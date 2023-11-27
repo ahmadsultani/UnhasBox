@@ -5,24 +5,27 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
-  IonItem,
   IonMenu,
   IonSearchbar,
   IonText,
-  IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { heart, cart } from "ionicons/icons";
-import React from "react";
-import { navItems } from "../Navbar";
+import { navItems } from "@/components/Navbar";
 
-import "../../styles/sidebar.css";
+import { heart, cart } from "ionicons/icons";
+
+import "@/styles/sidebar.css";
+import { CustomAvatar } from "../CustomAvatar";
+import { TUser } from "@/types/user.type";
 
 interface SidebarProps {
   contentId: string;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ contentId }) => {
+  const localUser = localStorage.getItem("user") || "";
+  const data = localUser ? (JSON.parse(localUser) as TUser) : null;
+
   return (
     <IonMenu contentId={contentId} side="end">
       <IonHeader>
@@ -31,10 +34,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ contentId }) => {
             <IonButton color="primary" fill="clear" href="/favorite">
               <IonIcon slot="icon-only" icon={heart} />
             </IonButton>
-
             <IonButton color="primary" fill="clear" href="/cart">
               <IonIcon slot="icon-only" icon={cart} />
             </IonButton>
+            {data && (
+              <IonButton shape="round" fill="clear" href="/profile">
+                <CustomAvatar src={data.photo_url} name={data.firstName} />
+              </IonButton>
+            )}
           </IonButtons>
         </IonToolbar>
       </IonHeader>
@@ -71,23 +78,25 @@ export const Sidebar: React.FC<SidebarProps> = ({ contentId }) => {
 
           <section>
             <IonButton
-              href="/login"
+              href={!data ? "/login" : "/logout"}
               color="primary"
               expand="full"
               fill="solid"
               shape="round"
             >
-              <IonText>Login</IonText>
+              {data ? <IonText>Logout</IonText> : <IonText>Login</IonText>}
             </IonButton>
-            <IonButton
-              href="/signup"
-              color="primary"
-              expand="full"
-              fill="clear"
-              className="ion-margin-top"
-            >
-              Signup
-            </IonButton>
+            {!data && (
+              <IonButton
+                href="/signup"
+                color="primary"
+                expand="full"
+                fill="clear"
+                className="ion-margin-top"
+              >
+                <IonText>Signup</IonText>
+              </IonButton>
+            )}
           </section>
         </IonCol>
       </IonContent>

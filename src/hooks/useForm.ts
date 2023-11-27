@@ -1,3 +1,4 @@
+import { InputCustomEvent } from "@/types/event.type";
 import { useState } from "react";
 
 type FormProps<T> = {
@@ -11,9 +12,7 @@ export const useForm = <T extends Record<string, unknown>>({
 }: FormProps<T>) => {
   const [values, setValues] = useState<T>(initialValues);
 
-  const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
+  const handleChange = (event: InputCustomEvent) => {
     const { name, value } = event.target;
     setValues((prevValues) => ({ ...prevValues, [name]: value }));
   };

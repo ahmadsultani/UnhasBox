@@ -2,11 +2,15 @@ import {
   IonButton,
   IonButtons,
   IonIcon,
+  IonItem,
   IonSearchbar,
   IonText,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+
+import { CustomAvatar } from "@/components/CustomAvatar";
+
 import {
   heart,
   cart,
@@ -14,9 +18,12 @@ import {
   newspaperOutline,
   homeOutline,
 } from "ionicons/icons";
-import React from "react";
+import { TUser } from "@/types/user.type";
 
 export const Navitems: React.FC = () => {
+  const localUser = localStorage.getItem("user");
+  const data = localUser ? (JSON.parse(localUser) as TUser) : null;
+
   return (
     <IonToolbar>
       <IonButtons className="ion-padding" slot="start">
@@ -51,17 +58,34 @@ export const Navitems: React.FC = () => {
           <IonIcon slot="icon-only" icon={cart} />
         </IonButton>
       </IonButtons>
-
-      <IonButtons slot="end" className="ion-padding-horizontal ">
-        <IonButton href="/login" color="primary" fill="solid" shape="round">
-          <IonText className="ion-padding-horizontal navbar__login-text">
-            Login
-          </IonText>
-        </IonButton>
-        <IonButton href="/signup" color="primary">
-          Signup
-        </IonButton>
-      </IonButtons>
+      {!data ? (
+        <IonButtons slot="end" className="ion-padding-horizontal ">
+          <IonButton href="/login" color="primary" fill="solid" shape="round">
+            <IonText className="ion-padding-horizontal navbar__login-text">
+              Login
+            </IonText>
+          </IonButton>
+          <IonButton href="/signup" color="primary">
+            Signup
+          </IonButton>
+        </IonButtons>
+      ) : (
+        data && (
+          <IonItem slot="end" className="ion-padding-horizontal">
+            <IonText color="dark" className="ion-padding-horizontal">
+              Hi, {data.firstName}!
+            </IonText>
+            <IonButton
+              className="ion-no-padding"
+              shape="round"
+              href="/profile"
+              fill="clear"
+            >
+              <CustomAvatar src={data.photo_url} name={data.firstName} />
+            </IonButton>
+          </IonItem>
+        )
+      )}
     </IonToolbar>
   );
 };

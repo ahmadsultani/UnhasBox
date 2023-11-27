@@ -1,85 +1,139 @@
-import { IonPage, IonContent, IonInput, IonButton, IonItem, IonLabel, IonIcon, IonText, IonImg } from "@ionic/react";
-
 import { useState } from "react";
-import { MainLayout } from "../layouts";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { IonInput, IonButton, IonText, IonImg, IonSpinner } from "@ionic/react";
 
-import "../styles/signup.css";
+import { useHistory } from "react-router-dom";
 
-import { lockClosedOutline, lockClosedSharp, personOutline } from "ionicons/icons";
+import { useForm } from "@/hooks/useForm";
+import { signup } from "@/services/auth";
+
+import { TSignupForm } from "@/types/form.type";
+import { TUser } from "@/types/user.type";
+
+import "@/styles/signup.css";
+import { useToast } from "@/hooks/useToast";
 
 export const Signup: React.FC = () => {
-  const [firstName, setFirstName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const history = useHistory();
+  const queryClient = useQueryClient();
 
-  const handleSignup = () => {
-    console.log('Signup data:', { firstName, lastName, email, password });
-  };
+  const { successToast, errorToast } = useToast();
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { mutateAsync } = useMutation<TUser, Error, TSignupForm>({
+    mutationFn: signup,
+    retry: 0,
+    onSuccess: (data) => {
+      queryClient.setQueryData(["user"], data);
+      successToast("Account created successfully");
+      setTimeout(() => {
+        history.push("/");
+      }, 2000);
+    },
+    onError: (error) => {
+      errorToast(error.message);
+    },
+    onMutate: () => {
+      setIsLoading(true);
+    },
+    onSettled: () => {
+      setIsLoading(false);
+    },
+  });
+
+  const { values, handleChange, handleSubmit } = useForm<TSignupForm>({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+    },
+    onSubmit: (values) => mutateAsync(values),
+  });
 
   return (
-      <div className="signup">
-        <section className="signup__container">
-          <section className="signup__container-image">
-            <IonImg src='https://stories.freepiklabs.com/api/vectors/sign-up/rafiki/render?color=&background=complete&hide='
-                    className="signup__container-image-image"/>
-          </section>
-          <section className="signup__container-text">
-          <p className="signup__title-1">Let's</p>
+    <div className="signup">
+      <section className="signup__container">
+        <section className="signup__container-image">
+          <IonImg
+            src="https://stories.freepiklabs.com/api/vectors/sign-up/rafiki/render?color=&background=complete&hide="
+            className="signup__container-image-image"
+          />
+        </section>
+        <section className="signup__container-text">
+          <p className="signup__title-1">Let&apos;s</p>
           <p className="signup__title-2">Create Account</p>
           <header>
             <h1 className="ion-text-center signup__title-3">Sign Up</h1>
           </header>
-          <main className="signup__main">
-            <section className="signup__inputs">
-              <div className="signup__double">
-                <IonInput
-                  fill="outline"
-                  type="text"
-                  label="First Name"
-                  labelPlacement="floating"
-                  className="signup__inputs-input" 
-                  onIonChange={(e) => setFirstName(e.detail.value!)}
+          <form onSubmit={handleSubmit}>
+            <fieldset className="signup__main" disabled={isLoading}>
+              <section className="signup__inputs">
+                <div className="signup__double">
+                  <IonInput
+                    fill="outline"
+                    type="text"
+                    label="First Name"
+                    name="firstName"
+                    labelPlacement="floating"
+                    className="signup__inputs-input"
+                    value={values.firstName}
+                    onIonInput={handleChange}
+                    required
                   />
-                <IonInput
-                  fill="outline"
-                  type="text"
-                  label="Last Name"
-                  labelPlacement="floating"
-                  className="signup__inputs-input" 
-                  onIonChange={(e) => setLastName(e.detail.value!)}
+                  <IonInput
+                    fill="outline"
+                    type="text"
+                    label="Last Name"
+                    name="lastName"
+                    labelPlacement="floating"
+                    className="signup__inputs-input"
+                    value={values.lastName}
+                    onIonInput={handleChange}
+                    required
                   />
-              </div>
-              <IonInput
+                </div>
+                <IonInput
                   fill="outline"
                   type="text"
                   label="Email Address"
+                  name="email"
                   labelPlacement="floating"
-                  className="signup__inputs-input" 
-                  onIonChange={(e) => setEmail(e.detail.value!)}
-                  />
-                  <IonInput
+                  className="signup__inputs-input"
+                  value={values.email}
+                  onIonInput={handleChange}
+                  required
+                />
+                <IonInput
                   fill="outline"
                   type="password"
                   label="Password"
+                  name="password"
                   labelPlacement="floating"
-                  className="signup__inputs-input" 
-                  onIonChange={(e) => setPassword(e.detail.value!)}
-                  />
-            </section>
-            <IonText className="ion-text-center signup__text">
-              I've read and agree to the <a hrefLang="/terms">Terms of Service</a> and <a hrefLang="/privacy">Privacy Policy</a>
-            </IonText>
-            <IonButton
-              expand="full"
-              className="signup__button"
-              onClick={handleSignup}
+                  className="signup__inputs-input"
+                  value={values.password}
+                  onIonInput={handleChange}
+                  required
+                />
+              </section>
+              <IonText className="ion-text-center signup__text">
+                I&apos;ve read and agree to the{" "}
+                <a href="/terms">Terms of Service</a> and{" "}
+                <a href="/privacy">Privacy Policy</a>
+              </IonText>
+              <IonButton
+                expand="full"
+                className="signup__button"
+                type="submit"
+                disabled={isLoading}
               >
-              sign up
-            </IonButton>
-          </main>
-          </section>
+                {isLoading ? <IonSpinner name="circles" /> : "Signup"}
+              </IonButton>
+            </fieldset>
+          </form>
         </section>
-      </div>
+      </section>
+    </div>
   );
 };
