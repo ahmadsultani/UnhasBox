@@ -9,3 +9,7 @@ export * from "./product/page";
 export * from "./product/[id]/page";
 export * from "./profile";
 export * from "./success-checkout";
+export * from "./admin/page";
+export * from "./admin/product/page";
+export * from "./admin/blog/page";
+export * from "./admin/historypurchase/page";

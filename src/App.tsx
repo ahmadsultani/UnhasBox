@@ -14,6 +14,10 @@ import {
   ProductDetail,
   Profile,
   SuccessCheckout,
+  Admin,
+  AdminProduct,
+  AdminBlog,
+  AdminHistoryPurchase,
 } from "./pages";
 
 /* Core CSS required for Ionic components to work properly */
@@ -77,6 +81,18 @@ const App: React.FC = () => (
         </Route>
         <Route exact path="/success-checkout">
           <SuccessCheckout />
+        </Route>
+        <Route exact path="/admin">
+          <Admin />
+        </Route>
+        <Route path="/admin/product">
+          <AdminProduct />
+        </Route>
+        <Route path="/admin/blog">
+          <AdminBlog />
+        </Route>
+        <Route path="/admin/history-purchase">
+          <AdminHistoryPurchase />
         </Route>
         <Route path="/logout">
           <Logout />
