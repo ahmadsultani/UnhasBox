@@ -66,7 +66,7 @@ export const ProductSection: React.FC = () => {
       )}
       <section>
         <IonButton
-          href="/blog"
+          href="/product"
           fill="solid"
           color="primary"
           className="product-section__button"
