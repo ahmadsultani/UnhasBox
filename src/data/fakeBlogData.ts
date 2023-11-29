@@ -1,8 +1,10 @@
 interface IBlog {
-  id: number,
+  id: number;
   slug: string;
   title: string;
   tags: string[];
+  writer: string;
+  date: string;
   content: string;
   image: string;
 }
@@ -13,8 +15,9 @@ export const blogs: IBlog[] = [
     slug: "blog-123",
     title: "Blog Title 1",
     tags: ["ini tag1", "ini tag2", "ini tag3", "ini tag3"],
-    content:
-      "Blog Content 1",
+    writer: "Sultani",
+    date: "29 November 2023",
+    content: "Blog Content 1",
     image:
       "https://www.adorama.com/alc/wp-content/uploads/2021/06/mountain-photography-tips-tricks-feature.jpg",
   },
@@ -23,6 +26,8 @@ export const blogs: IBlog[] = [
     slug: "blog-123",
     title: "Blog Title 1",
     tags: ["ini tag1", "ini tag2", "ini tag3", "ini tag3"],
+    writer: "Sultani",
+    date: "29 November 2023",
     content: "Blog Content 1",
     image:
       "https://www.adorama.com/alc/wp-content/uploads/2021/06/mountain-photography-tips-tricks-feature.jpg",
@@ -32,6 +37,8 @@ export const blogs: IBlog[] = [
     slug: "blog-123",
     title: "Blog Title 1",
     tags: ["ini tag1", "ini tag2", "ini tag3", "ini tag3"],
+    writer: "Sultani",
+    date: "29 November 2023",
     content: "Blog Content 1",
     image:
       "https://www.adorama.com/alc/wp-content/uploads/2021/06/mountain-photography-tips-tricks-feature.jpg",
@@ -41,6 +48,8 @@ export const blogs: IBlog[] = [
     slug: "blog-123",
     title: "Blog Title 1",
     tags: ["ini tag1", "ini tag2", "ini tag3", "ini tag3"],
+    writer: "Sultani",
+    date: "29 November 2023",
     content: "Blog Content 1",
     image:
       "https://www.adorama.com/alc/wp-content/uploads/2021/06/mountain-photography-tips-tricks-feature.jpg",
@@ -50,6 +59,8 @@ export const blogs: IBlog[] = [
     slug: "blog-123",
     title: "Blog Title 1",
     tags: ["ini tag1", "ini tag2", "ini tag3", "ini tag3"],
+    writer: "Sultani",
+    date: "29 November 2023",
     content: "Blog Content 1",
     image:
       "https://www.adorama.com/alc/wp-content/uploads/2021/06/mountain-photography-tips-tricks-feature.jpg",
@@ -59,6 +70,8 @@ export const blogs: IBlog[] = [
     slug: "blog-123",
     title: "Blog Title 1",
     tags: ["ini tag1", "ini tag2", "ini tag3", "ini tag3"],
+    writer: "Sultani",
+    date: "29 November 2023",
     content: "Blog Content 1",
     image:
       "https://www.adorama.com/alc/wp-content/uploads/2021/06/mountain-photography-tips-tricks-feature.jpg",
@@ -68,6 +81,8 @@ export const blogs: IBlog[] = [
     slug: "blog-123",
     title: "Blog Title 1",
     tags: ["ini tag1", "ini tag2", "ini tag3", "ini tag3"],
+    writer: "Sultani",
+    date: "29 November 2023",
     content: "Blog Content 1",
     image:
       "https://www.adorama.com/alc/wp-content/uploads/2021/06/mountain-photography-tips-tricks-feature.jpg",
@@ -77,6 +92,8 @@ export const blogs: IBlog[] = [
     slug: "blog-123",
     title: "Blog Title 1",
     tags: ["ini tag1", "ini tag2", "ini tag3", "ini tag3"],
+    writer: "Sultani",
+    date: "tanggal",
     content: "Blog Content 1",
     image:
       "https://www.adorama.com/alc/wp-content/uploads/2021/06/mountain-photography-tips-tricks-feature.jpg",
