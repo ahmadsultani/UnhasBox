@@ -1,0 +1,22 @@
+ion-split-pane {
+  --side-max-width: 20%;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  gap: 4px;
+}
+
+.deleteButton {
+  height: 50.9px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: right;
+  gap: 8px;
+}
