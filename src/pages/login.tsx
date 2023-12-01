@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useHistory } from "react-router-dom";
 
-import { IonButton, IonImg, IonInput, IonSpinner } from "@ionic/react";
+import { IonButton, IonIcon, IonImg, IonInput, IonSpinner } from "@ionic/react";
 
 import { signin } from "@/services/auth";
 
@@ -12,6 +12,7 @@ import { TSigninForm } from "@/types/form.type";
 import "@/styles/login.css";
 import { useForm } from "@/hooks/useForm";
 import { useToast } from "@/hooks/useToast";
+import { eye, eyeOff } from "ionicons/icons";
 
 export const Login: React.FC = () => {
   const history = useHistory();
@@ -20,6 +21,7 @@ export const Login: React.FC = () => {
   const { successToast, errorToast } = useToast();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const { mutateAsync } = useMutation<TUser, Error, TSigninForm>({
     mutationFn: signin,
@@ -62,10 +64,12 @@ export const Login: React.FC = () => {
           />
         </section>
         <section className="login__container-text">
-          <p className="login__title-1">Hello !</p>
-          <p className="login__title-2">Welcome Back</p>
+          <div>
+            <p className="login__title-1">Hello !</p>
+            <p className="login__title-2">Welcome Back</p>
+          </div>
           <header>
-            <h1 className="ion-text-center login__title-3">Login</h1>
+            <p className="ion-text-center login__title-3">Login</p>
           </header>
           <form onSubmit={handleSubmit}>
             <fieldset disabled={isLoading} className="login__main">
@@ -83,18 +87,24 @@ export const Login: React.FC = () => {
                 />
                 <IonInput
                   fill="outline"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   label="Password"
-                  name="password"
                   labelPlacement="floating"
+                  name="password"
                   className="login__inputs-input"
                   value={values.password}
                   onIonInput={handleChange}
                   required
-                />
-              </section>
-              <section className="login__forgot">
-                <a href="/forgot-password">Forgot Password?</a>
+                >
+                  <IonIcon
+                    icon={showPassword ? eye : eyeOff}
+                    className="login__inputs-icon"
+                    onClick={() => setShowPassword(!showPassword)}
+                  />
+                </IonInput>
+                <section className="login__forgot">
+                  <a href="/forgot-password">Forgot Password?</a>
+                </section>
               </section>
               <IonButton
                 expand="block"
