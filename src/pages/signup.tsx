@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { IonInput, IonButton, IonText, IonImg, IonSpinner } from "@ionic/react";
+import {
+  IonInput,
+  IonButton,
+  IonText,
+  IonImg,
+  IonSpinner,
+  IonIcon,
+} from "@ionic/react";
 
 import { useHistory } from "react-router-dom";
 
@@ -12,6 +19,7 @@ import { TUser } from "@/types/user.type";
 
 import "@/styles/signup.css";
 import { useToast } from "@/hooks/useToast";
+import { eye, eyeOff } from "ionicons/icons";
 
 export const Signup: React.FC = () => {
   const history = useHistory();
@@ -20,6 +28,7 @@ export const Signup: React.FC = () => {
   const { successToast, errorToast } = useToast();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const { mutateAsync } = useMutation<TUser, Error, TSignupForm>({
     mutationFn: signup,
@@ -52,6 +61,10 @@ export const Signup: React.FC = () => {
     onSubmit: (values) => mutateAsync(values),
   });
 
+  function handleLogin(): void {
+    throw new Error("Function not implemented.");
+  }
+
   return (
     <div className="signup">
       <section className="signup__container">
@@ -62,11 +75,11 @@ export const Signup: React.FC = () => {
           />
         </section>
         <section className="signup__container-text">
-          <p className="signup__title-1">Let&apos;s</p>
-          <p className="signup__title-2">Create Account</p>
-          <header>
-            <h1 className="ion-text-center signup__title-3">Sign Up</h1>
-          </header>
+          <div className="signup__title-container">
+            <p className="signup__title-1">Let&apos;s</p>
+            <p className="signup__title-2">Create Account</p>
+          </div>
+          <p className="ion-text-center signup__title-3">Sign Up</p>
           <form onSubmit={handleSubmit}>
             <fieldset className="signup__main" disabled={isLoading}>
               <section className="signup__inputs">
@@ -107,7 +120,7 @@ export const Signup: React.FC = () => {
                 />
                 <IonInput
                   fill="outline"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   label="Password"
                   name="password"
                   labelPlacement="floating"
@@ -115,13 +128,19 @@ export const Signup: React.FC = () => {
                   value={values.password}
                   onIonInput={handleChange}
                   required
-                />
+                >
+                  <IonIcon
+                    icon={showPassword ? eye : eyeOff}
+                    className="signup__inputs-icon"
+                    onClick={() => setShowPassword(!showPassword)}
+                  />
+                </IonInput>
+                <IonText className="ion-text-center signup__text">
+                  I&apos;ve read and agree to the{" "}
+                  <a href="/terms">Terms of Service</a> and{" "}
+                  <a href="/privacy">Privacy Policy</a>
+                </IonText>
               </section>
-              <IonText className="ion-text-center signup__text">
-                I&apos;ve read and agree to the{" "}
-                <a href="/terms">Terms of Service</a> and{" "}
-                <a href="/privacy">Privacy Policy</a>
-              </IonText>
               <IonButton
                 expand="full"
                 className="signup__button"
@@ -130,6 +149,14 @@ export const Signup: React.FC = () => {
               >
                 {isLoading ? <IonSpinner name="circles" /> : "Signup"}
               </IonButton>
+              <div className="signup__to-login">
+                <p>
+                  Already have an account?{" "}
+                  <a href="/login" onClick={handleLogin}>
+                    Login
+                  </a>
+                </p>
+              </div>
             </fieldset>
           </form>
         </section>
