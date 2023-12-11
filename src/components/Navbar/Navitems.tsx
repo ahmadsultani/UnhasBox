@@ -7,35 +7,50 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
+  useIonRouter,
 } from "@ionic/react";
+
+import Cookies from "js-cookie";
 
 import { CustomAvatar } from "@/components/CustomAvatar";
 
 import {
-  heart,
   cart,
   cubeOutline,
-  newspaperOutline,
+  heart,
   homeOutline,
+  newspaperOutline,
 } from "ionicons/icons";
+
 import { TUser } from "@/types/user.type";
 
 export const Navitems: React.FC = () => {
-  const localUser = localStorage.getItem("user");
-  const data = localUser ? (JSON.parse(localUser) as TUser) : null;
+  const router = useIonRouter();
+  const userCookies = Cookies.get("user");
+  const user: TUser = userCookies ? JSON.parse(userCookies) : undefined;
 
   return (
     <IonToolbar>
       <IonButtons className="ion-padding" slot="start">
         <IonTitle className="ion-padding-horizontal" slot="start">
-          <IonText color="dark navbar__title">UnhasBox</IonText>
+          <IonText color="dark" className="navbar__title">
+            UnhasBox
+          </IonText>
         </IonTitle>
         {navItems.map((item, index) => (
           <IonButton
             key={index}
             href={item.href}
             slot="start"
-            color="dark"
+            color={
+              item.href !== "/"
+                ? router.routeInfo.pathname.startsWith(item.href)
+                  ? "primary"
+                  : "dark"
+                : router.routeInfo.pathname === item.href
+                  ? "primary"
+                  : "dark"
+            }
             className="ion-padding-horizontal navbar__navitem"
           >
             {item.label}
@@ -58,7 +73,7 @@ export const Navitems: React.FC = () => {
           <IonIcon slot="icon-only" icon={cart} />
         </IonButton>
       </IonButtons>
-      {!data ? (
+      {!user ? (
         <IonButtons slot="end" className="ion-padding-horizontal ">
           <IonButton href="/login" color="primary" fill="solid" shape="round">
             <IonText className="ion-padding-horizontal navbar__login-text">
@@ -70,10 +85,10 @@ export const Navitems: React.FC = () => {
           </IonButton>
         </IonButtons>
       ) : (
-        data && (
-          <IonItem slot="end" className="ion-padding-horizontal">
+        user && (
+          <IonItem slot="end" className="ion-padding-horizontal" lines="none">
             <IonText color="dark" className="ion-padding-horizontal">
-              Hi, {data.firstName}!
+              Hi, {user.firstName}!
             </IonText>
             <IonButton
               className="ion-no-padding"
@@ -81,7 +96,7 @@ export const Navitems: React.FC = () => {
               href="/profile"
               fill="clear"
             >
-              <CustomAvatar src={data.photo_url} name={data.firstName} />
+              <CustomAvatar src={user.photoURL ?? ""} name={user.firstName} />
             </IonButton>
           </IonItem>
         )

@@ -12,9 +12,10 @@ const root = createRoot(container!);
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: 3,
+      retry: false,
       refetchOnWindowFocus: false,
       refetchOnMount: false,
+      gcTime: Infinity,
     },
   },
 });

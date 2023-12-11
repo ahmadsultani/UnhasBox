@@ -17,14 +17,15 @@ import { heart, cart } from "ionicons/icons";
 import "@/styles/sidebar.css";
 import { CustomAvatar } from "../CustomAvatar";
 import { TUser } from "@/types/user.type";
+import Cookies from "js-cookie";
 
 interface SidebarProps {
   contentId: string;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ contentId }) => {
-  const localUser = localStorage.getItem("user") || "";
-  const data = localUser ? (JSON.parse(localUser) as TUser) : null;
+  const userCookies = Cookies.get("user");
+  const user: TUser = userCookies ? JSON.parse(userCookies) : undefined;
 
   return (
     <IonMenu contentId={contentId} side="end">
@@ -37,9 +38,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ contentId }) => {
             <IonButton color="primary" fill="clear" href="/cart">
               <IonIcon slot="icon-only" icon={cart} />
             </IonButton>
-            {data && (
+            {user && (
               <IonButton shape="round" fill="clear" href="/profile">
-                <CustomAvatar src={data.photo_url} name={data.firstName} />
+                <CustomAvatar src={user.photoURL || ""} name={user.firstName} />
               </IonButton>
             )}
           </IonButtons>
@@ -78,15 +79,15 @@ export const Sidebar: React.FC<SidebarProps> = ({ contentId }) => {
 
           <section>
             <IonButton
-              href={!data ? "/login" : "/logout"}
+              href={!user ? "/login" : "/logout"}
               color="primary"
               expand="full"
               fill="solid"
               shape="round"
             >
-              {data ? <IonText>Logout</IonText> : <IonText>Login</IonText>}
+              {user ? <IonText>Logout</IonText> : <IonText>Login</IonText>}
             </IonButton>
-            {!data && (
+            {!user && (
               <IonButton
                 href="/signup"
                 color="primary"

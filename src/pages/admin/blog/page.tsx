@@ -1,18 +1,18 @@
-import { AdminLayout } from "@/layouts";
 import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonButtons,
-  IonMenuButton,
-  IonTitle,
-  IonContent,
-  IonImg,
   IonButton,
-  IonAlert,
+  IonContent,
+  IonHeader,
   IonIcon,
+  IonItem,
+  IonMenuButton,
+  IonSpinner,
+  IonText,
+  IonTitle,
+  IonToolbar,
+  useIonRouter,
 } from "@ionic/react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import {
   MaterialReactTable,
@@ -20,126 +20,215 @@ import {
   type MRT_ColumnDef,
 } from "material-react-table";
 
-import { blogs } from "@/data/fakeBlogData";
-import { AdminModal } from "@/components/AdminModal/AdminModal";
-import { trashSharp } from "ionicons/icons";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { useToast } from "@/hooks/useToast";
+import { download, mkConfig, generateCsv } from "export-to-csv";
 
-type Blog = {
-  id: number;
-  slug: string;
-  title: string;
-  writer: string;
-  tags: string[];
-  date: string;
-  image: string;
-  content: string;
-};
+import { getAllBlog } from "@/services/blog";
+
+import { TBlog } from "@/types/blog.type";
+
+import { AdminLayout } from "@/layouts";
+import { BlogDelete } from "@/components/Modal";
+
+import {
+  download as downloadIcon,
+  pencilSharp,
+  trashSharp,
+} from "ionicons/icons";
+
+enum EBlogStatus {
+  LOADING,
+  ERROR,
+  SUCCESS,
+}
+
+const columns: MRT_ColumnDef<TBlog>[] = [
+  {
+    accessorKey: "title",
+    header: "Title",
+  },
+  {
+    accessorKey: "description",
+    header: "Description",
+  },
+  {
+    accessorKey: "views",
+    header: "Views",
+  },
+  {
+    accessorKey: "tags",
+    header: "Tags",
+  },
+  {
+    accessorKey: "createdAt",
+    header: "Created At",
+    accessorFn: ({ createdAt }) =>
+      new Date(createdAt || "").toLocaleDateString(),
+  },
+  {
+    accessorKey: "updatedAt",
+    header: "Updated At",
+    accessorFn: ({ updatedAt }) =>
+      new Date(updatedAt || "").toLocaleDateString(),
+  },
+];
+
+const csvConfig = mkConfig({
+  fieldSeparator: ",",
+  decimalSeparator: ".",
+  useKeysAsHeaders: true,
+  filename: "blogs",
+});
 
 export const AdminBlog = () => {
-  const columns = useMemo<MRT_ColumnDef<Blog>[]>(
-    () => [
-      {
-        accessorKey: "title",
-        header: "Title",
-      },
-      {
-        accessorKey: "image",
-        header: "Image",
-        render: (value: string | undefined) => (
-          <IonImg
-            src={value}
-            alt="Blog"
-            style={{ maxWidth: "100%", maxHeight: "100%" }}
-          />
-        ),
-      },
+  const router = useIonRouter();
 
-      {
-        accessorKey: "slug",
-        header: "Slug",
-      },
-      {
-        accessorKey: "tags",
-        header: "Tags",
-      },
+  const {
+    data: blogs,
+    isLoading: isLoadingBlogs,
+    isError: isErrorBlogs,
+    error,
+  } = useQuery({
+    queryKey: ["blog"],
+    queryFn: getAllBlog,
+  });
 
-      {
-        accessorKey: "content",
-        header: "content",
-      },
-      {
-        accessorKey: "writer",
-        header: "Writer",
-      },
-      {
-        accessorKey: "date",
-        header: "Date",
-      },
-    ],
-    [],
-  );
+  const { errorToast } = useToast();
 
   const [isOpenAlert, setIsOpenAlert] = useState(false);
+  const [selectedRow, setSelectedRow] = useState<TBlog>();
+
+  const handleExportData = () => {
+    const csv = generateCsv(csvConfig)(blogs || []);
+    download(csvConfig)(csv);
+  };
+
+  const toggleDelete = (blog?: TBlog) => {
+    setSelectedRow(blog);
+    setIsOpenAlert(!!blog);
+  };
 
   const table = useMaterialReactTable({
     columns,
-    data: blogs,
+    data: blogs || [],
     enableEditing: true,
-    renderRowActions: () => (
-      <div className="actions">
-        <AdminModal action="" title={"Edit Blog"} field={"blog"} />
+    enableRowActions: true,
+    enableRowSelection: false,
+    positionActionsColumn: "last",
+    muiTablePaperProps: {
+      elevation: 0,
+    },
+    enableFullScreenToggle: false,
+    enableStickyFooter: true,
+    renderTopToolbarCustomActions: () => (
+      <IonButton
+        onClick={handleExportData}
+        color="primary"
+        fill="clear"
+        mode="ios"
+      >
+        <IonIcon icon={downloadIcon} slot="start" className="ion-padding-end" />
+        <IonText>Export</IonText>
+      </IonButton>
+    ),
+    renderRowActions: ({ row }) => (
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "nowrap",
+          alignItems: "center",
+          gap: "12px",
+          flexShrink: 0,
+        }}
+      >
+        <IonButton
+          color="primary"
+          className="ion-padding-vertical"
+          onClick={() => router.push(`/admin/blog/edit/${row.original.id}`)}
+        >
+          <IonIcon icon={pencilSharp} slot="start" />
+        </IonButton>
         <IonButton
           color="danger"
-          onClick={() => handleDeleteClick()}
+          onClick={() => toggleDelete(row.original)}
           className="deleteButton"
         >
           <IonIcon icon={trashSharp} slot="start"></IonIcon>
         </IonButton>
       </div>
     ),
-    enableColumnResizing: true,
   });
 
-  const handleDeleteClick = () => {
-    setIsOpenAlert(true);
+  const renderContent = (status: EBlogStatus) => {
+    switch (status) {
+      case EBlogStatus.LOADING:
+        return (
+          <div className="empty-container">
+            <IonSpinner
+              name="crescent"
+              color="primary"
+              style={{ transform: "scale(1.5)" }}
+            />
+          </div>
+        );
+      case EBlogStatus.ERROR:
+        errorToast(error?.name || "Unknown Error");
+
+        return (
+          <div className="empty-container">
+            <p>{error?.message || "Error Occurred, try to refresh the page"}</p>
+          </div>
+        );
+      case EBlogStatus.SUCCESS:
+        return (
+          <>
+            <IonItem lines="none">
+              <IonButton
+                slot="end"
+                color="primary"
+                className="ion-padding"
+                href="/admin/blog/create"
+              >
+                <IonIcon icon={pencilSharp} slot="start" />
+                <IonText className="ion-padding-horizontal">Create</IonText>
+              </IonButton>
+            </IonItem>
+            <MaterialReactTable table={table} />
+            {isOpenAlert && selectedRow && (
+              <BlogDelete
+                isOpen={isOpenAlert}
+                onClose={toggleDelete}
+                id={selectedRow.id}
+                name={selectedRow.title}
+              />
+            )}
+          </>
+        );
+    }
   };
 
-  const handleDeleteConfirm = () => {
-    setIsOpenAlert(false);
-  };
-
-  const handleDeleteCancel = () => {
-    setIsOpenAlert(false);
-  };
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   return (
     <AdminLayout>
-      <IonPage className="" id="main">
+      {!isDesktop && (
         <IonHeader>
           <IonToolbar>
-            <IonButtons slot="start">
-              <IonMenuButton></IonMenuButton>
-            </IonButtons>
-            <IonTitle className="ion-padding">Product</IonTitle>
+            <IonMenuButton slot="start"></IonMenuButton>
+            <IonTitle>Blog</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent className="ion-padding">
-          <AdminModal action={"Add Blog"} title={"Add Blog"} field="blog" />
-          <MaterialReactTable table={table} />
-          {isOpenAlert && (
-            <IonAlert
-              isOpen={isOpenAlert}
-              onDidDismiss={handleDeleteCancel}
-              header={"Delete Blog"}
-              message={"Are you sure you want to delete this blog?"}
-              buttons={[
-                { text: "Cancel", role: "cancel", handler: handleDeleteCancel },
-                { text: "Delete", handler: handleDeleteConfirm },
-              ]}
-            />
-          )}
-        </IonContent>
-      </IonPage>
+      )}
+      <IonContent className="ion-padding">
+        {renderContent(
+          isLoadingBlogs
+            ? EBlogStatus.LOADING
+            : isErrorBlogs
+              ? EBlogStatus.ERROR
+              : EBlogStatus.SUCCESS,
+        )}
+      </IonContent>
     </AdminLayout>
   );
 };

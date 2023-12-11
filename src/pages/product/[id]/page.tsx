@@ -6,6 +6,7 @@ import {
   IonChip,
   IonRow,
   IonSpinner,
+  IonRedirect,
 } from "@ionic/react";
 import {
   bagHandle,
@@ -27,15 +28,22 @@ import "@/styles/product.css";
 
 import { ProductCard } from "@/components/ProductCard";
 
-import { products } from "@/data/fakeProductData";
-
 import { parserCurrency } from "@/utils/parsercurrency";
-import { getOneProduct } from "@/services/product";
-import { Redirect, useParams } from "react-router";
+import { getAllProduct, getOneProduct } from "@/services/product";
+import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 
 export const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+
+  const {
+    data: products,
+    isLoading: isLoadingProducts,
+    isError: isErrorProducts,
+  } = useQuery({
+    queryKey: ["product"],
+    queryFn: getAllProduct,
+  });
 
   const {
     data: product,
@@ -78,7 +86,7 @@ export const ProductDetail: React.FC = () => {
   }
 
   if (isError || !product) {
-    return <Redirect to="/404" />;
+    return <IonRedirect to="/404" />;
   }
 
   return (
@@ -88,20 +96,20 @@ export const ProductDetail: React.FC = () => {
           <section className="product-detail__container">
             <section className="product-detail__container-image">
               <IonImg
-                src={product.image}
+                src={product.thumbnail}
                 className="product-detail__image-view-img"
               />
               <IonRow className="product-detail__image-preview">
                 <IonImg
-                  src={product.image}
+                  src={product.thumbnail}
                   className="product-detail__image-preview-item"
                 />
                 <IonImg
-                  src={product.image}
+                  src={product.thumbnail}
                   className="product-detail__image-preview-item"
                 />
                 <IonImg
-                  src={product.image}
+                  src={product.thumbnail}
                   className="product-detail__image-preview-item"
                 />
               </IonRow>
@@ -239,17 +247,55 @@ export const ProductDetail: React.FC = () => {
         <footer className="product-detail__footer">
           <h3 className="product-detail__footer-title">Related Products</h3>
           <main className="product__container">
-            {products.slice(0, 4).map((product) => (
-              <ProductCard
-                key={product.id}
-                slug={product.slug}
-                title={product.title}
-                category={product.category}
-                price={product.price}
-                image={product.image}
-                desc={product.desc}
-              />
-            ))}
+            {isLoadingProducts ? (
+              <div className="empty-container">
+                <IonSpinner
+                  color="primary"
+                  name="crescent"
+                  style={{ transform: "scale(1.4)" }}
+                />
+              </div>
+            ) : isErrorProducts ? (
+              <div className="empty-container">
+                <IonText>
+                  <p
+                    className="ion-text-center"
+                    style={{ fontSize: "1.5em", fontWeight: 600 }}
+                  >
+                    Something went wrong!
+                  </p>
+                </IonText>
+              </div>
+            ) : products && products.length > 0 ? (
+              <section className="product-section__container">
+                {products.slice(0, 4).map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    slug={product.id}
+                    title={product.name}
+                    category={product.category.name}
+                    price={product.price}
+                    image={product.thumbnail}
+                    desc={product.description}
+                  />
+                ))}
+              </section>
+            ) : (
+              <div className="empty-container">
+                <IonText>
+                  <p
+                    className="ion-text-center"
+                    style={{
+                      marginTop: "3em",
+                      fontSize: "1.5em",
+                      fontWeight: 600,
+                    }}
+                  >
+                    No products found!
+                  </p>
+                </IonText>
+              </div>
+            )}
           </main>
         </footer>
       </section>

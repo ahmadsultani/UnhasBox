@@ -15,6 +15,7 @@
   align-items: center;
   padding: 20px;
   margin: 50px 0px;
+  width: min(90%, 1200px);
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   background-color: white;
   border-radius: 16px;
@@ -30,7 +31,7 @@
 
 .login__container-image-image {
   display: flex;
-  width: fit-content;
+  width: 100%;
 }
 
 .login__container-text {
@@ -100,6 +101,7 @@
 .login__forgot {
   font-size: 14px;
   text-align: right;
+  width: 100%;
 }
 
 .login__button {
@@ -123,13 +125,16 @@
   .login__container {
     width: 60%;
     padding: 40px;
+
     .login__container-image {
       display: none;
     }
+
     .login__container-text {
       width: 100%;
       padding: 0;
     }
+
     .login__button {
       width: 35%;
     }
@@ -140,9 +145,11 @@
   .login__container {
     width: 90%;
   }
+
   .login__button {
     width: 100%;
   }
+
   .login__signup {
     font-size: 13px;
   }

@@ -6,6 +6,7 @@ import { logout } from "@/services/auth";
 import { useToast } from "@/hooks/useToast";
 
 import "@/styles/login.css";
+import Cookies from "js-cookie";
 
 export const Logout: React.FC = () => {
   const queryClient = useQueryClient();
@@ -17,7 +18,7 @@ export const Logout: React.FC = () => {
     retry: 0,
     onSuccess: () => {
       queryClient.setQueryData(["user"], null);
-      localStorage.removeItem("user");
+      Cookies.remove("user");
       successToast("Logout succeed, see you!");
     },
     onError: (error) => {
