@@ -47,7 +47,7 @@ export const ProductSection: React.FC = () => {
               title={product.name}
               category={product.category.name}
               price={product.price}
-              image={product.image}
+              image={product.thumbnail}
               desc={product.description}
             />
           ))}

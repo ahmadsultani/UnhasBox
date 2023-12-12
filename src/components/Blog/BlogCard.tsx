@@ -16,7 +16,6 @@ export const BlogCard: React.FC<BlogCardProps> = ({
   content,
   image,
 }) => {
-
   return (
     <section className="blog__card">
       <IonImg
@@ -45,7 +44,13 @@ export const BlogCard: React.FC<BlogCardProps> = ({
             <h3 className="blog__card-content-title">{title}</h3>
           </IonText>
 
-          <IonButton size="small" fill="clear" color="dark" shape="round" href={`blog/${slug}`}>
+          <IonButton
+            size="small"
+            fill="clear"
+            color="dark"
+            shape="round"
+            routerLink={`/blog/${slug}`}
+          >
             <IonIcon slot="icon-only" icon={arrowForward} />
           </IonButton>
         </header>
@@ -55,8 +60,8 @@ export const BlogCard: React.FC<BlogCardProps> = ({
         </IonText>
 
         <section className="blog__card-tags-container">
-          {tags.map((tag) => (
-            <IonChip color="dark" className="blog__card-chip">
+          {tags.map((tag, index) => (
+            <IonChip key={index} color="dark" className="blog__card-chip">
               <IonText className="ion-text-center">{tag}</IonText>
             </IonChip>
           ))}

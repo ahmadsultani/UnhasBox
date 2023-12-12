@@ -3,15 +3,16 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useHistory } from "react-router-dom";
 
 import { IonButton, IonIcon, IonImg, IonInput, IonSpinner } from "@ionic/react";
+import { Controller, useForm } from "react-hook-form";
+import Cookies from "js-cookie";
 
-import { signin } from "@/services/auth";
+import { login } from "@/services/auth";
+import { useToast } from "@/hooks/useToast";
 
 import { TUser } from "@/types/user.type";
-import { TSigninForm } from "@/types/form.type";
+import { TLoginForm } from "@/types/form.type";
 
 import "@/styles/login.css";
-import { useForm } from "@/hooks/useForm";
-import { useToast } from "@/hooks/useToast";
 import { eye, eyeOff } from "ionicons/icons";
 
 export const Login: React.FC = () => {
@@ -23,12 +24,12 @@ export const Login: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const { mutateAsync } = useMutation<TUser, Error, TSigninForm>({
-    mutationFn: signin,
+  const { mutateAsync } = useMutation<TUser, Error, TLoginForm>({
+    mutationFn: login,
     retry: 0,
     onSuccess: (data) => {
       queryClient.setQueryData(["user"], data);
-      localStorage.setItem("user", JSON.stringify(data));
+      Cookies.set("user", JSON.stringify(data));
       successToast("Logged in successfully");
       setIsLoading(false);
       setTimeout(() => {
@@ -46,13 +47,7 @@ export const Login: React.FC = () => {
     },
   });
 
-  const { values, handleChange, handleSubmit } = useForm<TSigninForm>({
-    initialValues: {
-      email: "",
-      password: "",
-    },
-    onSubmit: (values) => mutateAsync(values),
-  });
+  const { control, handleSubmit } = useForm<TLoginForm>();
 
   return (
     <div className="login">
@@ -71,41 +66,70 @@ export const Login: React.FC = () => {
           <header>
             <p className="ion-text-center login__title-3">Login</p>
           </header>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit((data) => mutateAsync(data))}>
             <fieldset disabled={isLoading} className="login__main">
               <section className="login__inputs">
-                <IonInput
-                  fill="outline"
-                  type="text"
-                  label="Email Address"
-                  labelPlacement="floating"
+                <Controller
+                  control={control}
                   name="email"
-                  className="login__inputs-input"
-                  value={values.email}
-                  onIonInput={handleChange}
-                  required
+                  rules={{
+                    required: "Please enter email address",
+                    pattern: {
+                      value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                      message: "Please enter valid email address",
+                    },
+                  }}
+                  render={({ field: { onChange, value }, fieldState }) => (
+                    <IonInput
+                      fill="outline"
+                      type="text"
+                      label="Email Address"
+                      labelPlacement="floating"
+                      name="email"
+                      className="login__inputs-input"
+                      errorText={fieldState.error?.message}
+                      value={value}
+                      onIonChange={onChange}
+                      required
+                    />
+                  )}
                 />
-                <IonInput
-                  fill="outline"
-                  type={showPassword ? "text" : "password"}
-                  label="Password"
-                  labelPlacement="floating"
+
+                <Controller
+                  control={control}
                   name="password"
-                  className="login__inputs-input"
-                  value={values.password}
-                  onIonInput={handleChange}
-                  required
-                >
-                  <IonIcon
-                    icon={showPassword ? eye : eyeOff}
-                    className="login__inputs-icon"
-                    onClick={() => setShowPassword(!showPassword)}
-                  />
-                </IonInput>
-                <section className="login__forgot">
-                  <a href="/forgot-password">Forgot Password?</a>
-                </section>
+                  rules={{
+                    required: "Please enter password",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters",
+                    },
+                  }}
+                  render={({ field: { onChange, value }, fieldState }) => (
+                    <IonInput
+                      fill="outline"
+                      type={showPassword ? "text" : "password"}
+                      label="Password"
+                      labelPlacement="floating"
+                      name="password"
+                      className="login__inputs-input"
+                      value={value}
+                      onIonInput={onChange}
+                      errorText={fieldState.error?.message}
+                      required
+                    >
+                      <IonIcon
+                        icon={showPassword ? eye : eyeOff}
+                        className="login__inputs-icon"
+                        onClick={() => setShowPassword(!showPassword)}
+                      />
+                    </IonInput>
+                  )}
+                />
               </section>
+              <a href="/forgot-password" className="login__forgot">
+                Forgot Password?
+              </a>
               <IonButton
                 expand="block"
                 className="login__button"

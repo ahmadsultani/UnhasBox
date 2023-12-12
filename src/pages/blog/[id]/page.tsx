@@ -8,8 +8,11 @@ import { blogs } from "@/data/fakeBlogData";
 import { arrowBack } from "ionicons/icons";
 
 import "@/styles/blog-detail.css";
+import { useHistory } from "react-router";
 
 export const BlogDetail: React.FC = () => {
+  const history = useHistory();
+
   return (
     <MainLayout>
       <main className="blog-detail ">
@@ -20,7 +23,7 @@ export const BlogDetail: React.FC = () => {
               fill="clear"
               color="dark"
               className="ion-no-padding"
-              href="/blog"
+              onClick={() => history.goBack()}
             >
               <IonIcon icon={arrowBack} slot="start" />
               <p className="ion-padding-start">Back to Blogs</p>
@@ -28,7 +31,8 @@ export const BlogDetail: React.FC = () => {
           </section>
           <IonText color="dark">
             <h1 className="blog-detail__title ">
-              Informatics Engineering Strengthen It's Student Far and Beyond
+              Informatics Engineering Strengthen It&apos;s Student Far and
+              Beyond
             </h1>
           </IonText>
           <IonImg

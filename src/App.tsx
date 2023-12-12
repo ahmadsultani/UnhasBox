@@ -1,23 +1,25 @@
-import { Route } from "react-router-dom";
 import { IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
+import { Route } from "react-router-dom";
 import {
-  Home,
-  Login,
-  Signup,
-  Cart,
-  Favorite,
-  _404,
+  Admin,
+  AdminBlog,
+  AdminHistoryPurchase,
+  AdminProduct,
   Blog,
   BlogDetail,
+  Cart,
+  Favorite,
+  Home,
+  Login,
   Product,
   ProductDetail,
   Profile,
+  Signup,
   SuccessCheckout,
-  Admin,
-  AdminProduct,
-  AdminBlog,
-  AdminHistoryPurchase,
+  _404,
+  AdminLogin,
+  AdminCategory,
 } from "./pages";
 
 /* Core CSS required for Ionic components to work properly */
@@ -29,35 +31,41 @@ import "@ionic/react/css/structure.css";
 import "@ionic/react/css/typography.css";
 
 /* Optional CSS utils that can be commented out */
-import "@ionic/react/css/padding.css";
+import "@ionic/react/css/display.css";
+import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/float-elements.css";
+import "@ionic/react/css/padding.css";
 import "@ionic/react/css/text-alignment.css";
 import "@ionic/react/css/text-transformation.css";
-import "@ionic/react/css/flex-utils.css";
-import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
 
 /* Global CSS */
-import "./styles/globals.css";
 import { Logout } from "./pages/logout";
+import "./styles/globals.css";
+import { RequireAuth } from "./middleware/auth.middleware";
+import { AdminOnly } from "./middleware/admin.middleware";
 
 setupIonicReact();
 
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
-      <IonRouterOutlet>
-        <Route exact path="/">
-          <Home />
-        </Route>
+      <IonRouterOutlet animated>
         <Route exact path="/login">
           <Login />
+        </Route>
+        <Route exact path="/login/admin">
+          <AdminLogin />
         </Route>
         <Route exact path="/signup">
           <Signup />
         </Route>
+        <Route exact path="/">
+          <Home />
+        </Route>
+
         <Route exact path="/cart">
           <Cart />
         </Route>
@@ -74,29 +82,53 @@ const App: React.FC = () => (
           <Product />
         </Route>
         <Route path="/product/:id">
-          <ProductDetail />
+          <RequireAuth>
+            <ProductDetail />
+          </RequireAuth>
         </Route>
         <Route path="/profile">
-          <Profile />
+          <RequireAuth>
+            <Profile />
+          </RequireAuth>
         </Route>
         <Route exact path="/success-checkout">
           <SuccessCheckout />
         </Route>
-        <Route exact path="/admin">
-          <Admin />
-        </Route>
-        <Route path="/admin/product">
-          <AdminProduct />
-        </Route>
-        <Route path="/admin/blog">
-          <AdminBlog />
-        </Route>
-        <Route path="/admin/history-purchase">
-          <AdminHistoryPurchase />
-        </Route>
         <Route path="/logout">
           <Logout />
         </Route>
+
+        <Route exact path="/admin">
+          <AdminOnly>
+            <Admin />
+          </AdminOnly>
+        </Route>
+        <Route path="/admin/product">
+          <AdminOnly>
+            <AdminProduct />
+          </AdminOnly>
+        </Route>
+        <Route path="/admin/blog">
+          <AdminOnly>
+            <AdminBlog />
+          </AdminOnly>
+        </Route>
+        <Route path="/admin/blog/create">
+          <AdminOnly>
+            <AdminBlog />
+          </AdminOnly>
+        </Route>
+        <Route path="/admin/history-purchase">
+          <AdminOnly>
+            <AdminHistoryPurchase />
+          </AdminOnly>
+        </Route>
+        <Route path="/admin/category">
+          <AdminOnly>
+            <AdminCategory />
+          </AdminOnly>
+        </Route>
+
         <Route component={_404} />
       </IonRouterOutlet>
     </IonReactRouter>

@@ -1,41 +1,22 @@
-import { useQuery } from "@tanstack/react-query";
-
-import { getCurrentUser } from "@/services/auth";
-
-import { IonRouterOutlet, IonSpinner } from "@ionic/react";
-import { Redirect } from "react-router";
 import { useToast } from "@/hooks/useToast";
+import { Redirect } from "react-router";
+import Cookies from "js-cookie";
+import { TUser } from "@/types/user.type";
 
-export default function CheckAuthMiddleware() {
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["user"],
-    queryFn: getCurrentUser,
-    refetchOnWindowFocus: false,
-    retry: false,
-  });
+interface RequireAuthProps {
+  children: React.ReactNode;
+}
 
+export const RequireAuth: React.FC<RequireAuthProps> = ({ children }) => {
   const { errorToast } = useToast();
 
-  const user = localStorage.getItem("user");
+  const userCookies = Cookies.get("user");
+  const user: TUser = userCookies ? JSON.parse(userCookies) : undefined;
 
   if (!user) {
+    errorToast("You must login first");
     return <Redirect to="/login" />;
   }
 
-  if (isLoading) {
-    return (
-      <main className="loading-screen">
-        <IonSpinner />
-      </main>
-    );
-  }
-
-  if (isError) {
-    if (user) errorToast("Ups! tolong login kembali");
-    localStorage.removeItem("user");
-  } else {
-    localStorage.setItem("user", JSON.stringify(data));
-  }
-
-  return <IonRouterOutlet />;
-}
+  return children;
+};
