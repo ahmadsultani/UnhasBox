@@ -100,12 +100,12 @@ export const Product: React.FC = () => {
             {products.map((product) => (
               <ProductCard
                 key={product.id}
-                slug={product.id}
-                title={product.name}
+                id={product.id}
+                name={product.name}
                 category={product.category.name}
                 price={product.price}
                 image={product.thumbnail}
-                desc={product.description}
+                isFavorite={product.isFavorite}
               />
             ))}
           </main>

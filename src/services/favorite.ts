@@ -1,4 +1,4 @@
-import { auth, db } from "@/config/firebase";
+import { db } from "@/config/firebase";
 import {
   DocumentReference,
   collection,
@@ -11,14 +11,21 @@ import {
   setDoc,
   where,
 } from "firebase/firestore";
+import { FirebaseError } from "firebase/app";
 
 import { TProduct } from "@/types/product.type";
 import { TCategory } from "@/types/category.type";
+import { TUser } from "@/types/user.type";
+
+import Cookies from "js-cookie";
 
 export const getAllFavoriteProduct = async () => {
-  const userId = auth.currentUser?.uid as string;
+  const userCookies = Cookies.get("user");
+  const user = userCookies ? (JSON.parse(userCookies) as TUser) : undefined;
 
-  const q = query(collection(db, "favorite"), where("userId", "==", userId));
+  if (!user) return [];
+
+  const q = query(collection(db, "favorite"), where("userId", "==", user.uid));
 
   const { docs } = await getDocs(q);
 
@@ -57,36 +64,57 @@ export const getAllFavoriteProduct = async () => {
   return products;
 };
 
-export const addFavorite = async (productId: string) => {
-  const userId = auth.currentUser?.uid as string;
-  const favoriteRef = doc(db, "favorite", `${userId}_${productId}`);
+export const addToFavorite = async (productId: string) => {
+  const userCookies = Cookies.get("user");
+  const user = userCookies ? (JSON.parse(userCookies) as TUser) : undefined;
+
+  if (!user)
+    throw new FirebaseError(
+      "auth/user-not-authenticated",
+      "You have to login first",
+    );
+
+  const favoriteRef = doc(db, "favorite", `${user.uid}_${productId}`);
   const isFavorite = await checkFavoriteExists(productId);
 
   if (isFavorite) {
     return;
   }
 
+  const timestamp = serverTimestamp();
+
   await setDoc(
     favoriteRef,
     {
-      userId,
+      userId: user.uid,
       productId,
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
+      createdAt: timestamp,
+      updatedAt: timestamp,
     },
     { merge: true },
   );
 };
 
 export const checkFavoriteExists = async (productId: string) => {
-  const userId = auth.currentUser?.uid as string;
-  if (!userId) return false;
-  const docRef = doc(db, "favorite", `${userId}_${productId}`);
+  const userCookies = Cookies.get("user");
+  const user = userCookies ? (JSON.parse(userCookies) as TUser) : undefined;
+
+  if (!user) return false;
+
+  const docRef = doc(db, "favorite", `${user.uid}_${productId}`);
   const querySnapshot = await getDoc(docRef);
   return querySnapshot.exists();
 };
 
-export const deleteFavorite = async (productTd: string) => {
-  const userId = auth.currentUser?.uid as string;
-  await deleteDoc(doc(db, "favorite", `${userId}_${productTd}`));
+export const deleteFromFavorite = async (productTd: string) => {
+  const userCookies = Cookies.get("user");
+  const user = userCookies ? (JSON.parse(userCookies) as TUser) : undefined;
+
+  if (!user)
+    throw new FirebaseError(
+      "auth/user-not-authenticated",
+      "You have to login first",
+    );
+
+  await deleteDoc(doc(db, "favorite", `${user.uid}_${productTd}`));
 };

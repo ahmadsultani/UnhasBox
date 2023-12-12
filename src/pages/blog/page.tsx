@@ -19,7 +19,7 @@ export const Blog: React.FC = () => {
     isLoading: isLoadingBlogs,
     isError: isErrorBlogs,
   } = useQuery({
-    queryKey: ["product"],
+    queryKey: ["blog"],
     queryFn: getAllBlog,
   });
 
@@ -93,14 +93,16 @@ export const Blog: React.FC = () => {
             />
           </div>
         ) : isErrorBlogs ? (
-          <IonText>
-            <p
-              className="ion-text-center"
-              style={{ marginTop: "3em", fontSize: "1.5em", fontWeight: 600 }}
-            >
-              Something went wrong!
-            </p>
-          </IonText>
+          <div className="empty-container">
+            <IonText>
+              <p
+                className="ion-text-center"
+                style={{ fontSize: "1.5em", fontWeight: 600 }}
+              >
+                Something went wrong!
+              </p>
+            </IonText>
+          </div>
         ) : blogs && blogs.length > 0 ? (
           <main className="blog__container ion-padding">
             {blogs.map((blog) => (
@@ -111,15 +113,19 @@ export const Blog: React.FC = () => {
                 content={blog.content}
                 image={blog.thumbnail}
                 tags={blog.tags}
+                author={blog.author}
+                createdAt={blog.createdAt}
               />
             ))}
           </main>
         ) : (
-          <IonText className="ion-text-center">
-            <p style={{ marginTop: "3em", fontSize: "1.5em", fontWeight: 600 }}>
-              No Blogs found!
-            </p>
-          </IonText>
+          <div className="empty-container">
+            <IonText className="ion-text-center">
+              <p style={{ fontSize: "1.5em", fontWeight: 600 }}>
+                No Blogs found!
+              </p>
+            </IonText>
+          </div>
         )}
       </section>
     </MainLayout>

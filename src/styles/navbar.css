@@ -52,3 +52,9 @@ ion-searchbar.navbar__searchbar {
   --clear-button-color: var(--ion-color-primary);
   text-align: left;
 }
+
+@media screen and (max-width: 768px) {
+  .navbar__title {
+    font-size: 1.2em;
+  }
+}

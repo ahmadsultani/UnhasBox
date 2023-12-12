@@ -1,31 +1,52 @@
-import { IonButton, IonImg, IonText } from "@ionic/react";
+import { IonButton, IonIcon, IonText } from "@ionic/react";
 import React from "react";
 import "@/styles/hero.css";
+import { arrowForward } from "ionicons/icons";
 
 export const Hero: React.FC = () => {
   return (
     <div className="hero">
-      <IonImg
+      {/* <IonImg
         src="https://i.ytimg.com/vi/uaVVSvP-5yg/maxresdefault.jpg"
         alt="rektorat unhas"
         className="hero__image"
-      />
+      /> */}
       <section className="hero__text">
         <IonText>
-          <h1 className="hero__text-heading">Welcome to Our Website</h1>
-          <p className="hero__text-p">Discover Amaizing Products</p>
+          <h1 className="hero__text-heading">
+            The Web Marketplace <br /> for Anak{" "}
+            <span
+              style={{
+                textDecoration: "underline",
+                color: "var(--ion-color-primary)",
+              }}
+            >
+              UNHAS
+            </span>
+          </h1>
         </IonText>
-        <div className="hero__text-buttons">
+        <IonText color="medium" className="hero__text-p">
+          Discover and Enjoy our Delightful yet Amazing Products
+        </IonText>
+        <div className="hero__button-group">
           <IonButton
-            href="/product"
+            routerLink="/product"
             fill="solid"
             color="primary"
-            className="hero__text-button"
+            shape="round"
+            mode="ios"
           >
-            Explore Product
+            <IonText className="ion-padding">Explore Product</IonText>
+            <IonIcon icon={arrowForward} />
           </IonButton>
-          <IonButton fill="outline" color="light" className="hero__text-button">
-            Signup
+          <IonButton
+            fill="outline"
+            color="primary"
+            shape="round"
+            mode="ios"
+            routerLink="/signup"
+          >
+            <IonText className="ion-padding">Signup</IonText>
           </IonButton>
         </div>
       </section>

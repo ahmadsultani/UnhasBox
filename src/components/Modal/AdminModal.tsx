@@ -20,6 +20,7 @@ interface AdminModalProps {
   onClose: () => void;
   onSave: (e: React.FormEvent<HTMLFormElement>) => void;
   children: React.ReactNode;
+  type?: "saveable" | "close-only";
 }
 
 export const AdminModal: React.FC<AdminModalProps> = ({
@@ -29,6 +30,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
   onClose,
   onSave,
   children,
+  type = "saveable",
 }) => {
   return (
     <IonModal
@@ -41,7 +43,10 @@ export const AdminModal: React.FC<AdminModalProps> = ({
         <IonPage>
           <IonHeader className="ion-padding-horizontal">
             <IonToolbar>
-              <IonTitle style={{ textTransform: "capitalize" }}>
+              <IonTitle
+                style={{ textTransform: "capitalize", fontWeight: 600 }}
+                color="dark"
+              >
                 {title}
               </IonTitle>
               <IonButtons slot="end">
@@ -58,21 +63,23 @@ export const AdminModal: React.FC<AdminModalProps> = ({
           </IonContent>
           <IonFooter>
             <IonText className="buttons ion-padding" slot="end">
-              <IonButton
-                color="primary"
-                fill="solid"
-                type="submit"
-                disabled={isLoading}
-              >
-                Save
-              </IonButton>
+              {type === "saveable" && (
+                <IonButton
+                  color="primary"
+                  fill="solid"
+                  type="submit"
+                  disabled={isLoading}
+                >
+                  Save
+                </IonButton>
+              )}
               <IonButton
                 color="danger"
                 fill="solid"
                 onClick={onClose}
                 disabled={isLoading}
               >
-                Cancel
+                {type === "saveable" ? "Cancel" : "Close"}
               </IonButton>
             </IonText>
           </IonFooter>

@@ -12,7 +12,7 @@ import {
 } from "@ionic/react";
 import {
   cartOutline,
-  newspaperOutline,
+  // newspaperOutline,
   radioOutline,
   bagHandleOutline,
 } from "ionicons/icons";
@@ -24,14 +24,28 @@ export const SidebarAdmin = ({ id }: { id: string }) => {
     <IonMenu contentId={id}>
       <IonHeader>
         <IonToolbar color="primary">
-          <IonItem lines="none" href="/admin" color="primary">
+          <IonItem
+            lines="none"
+            routerDirection="back"
+            routerOptions={{
+              unmount: true,
+            }}
+            routerLink="/admin"
+            color="primary"
+          >
             <IonTitle className="ion-padding-horizontal">Admin</IonTitle>
           </IonItem>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
         <IonList>
-          <IonItem href="/admin/product">
+          <IonItem
+            routerDirection="forward"
+            routerOptions={{
+              unmount: true,
+            }}
+            routerLink="/admin/product"
+          >
             <IonIcon
               aria-hidden="true"
               icon={cartOutline}
@@ -53,7 +67,13 @@ export const SidebarAdmin = ({ id }: { id: string }) => {
               Product
             </IonLabel>
           </IonItem>
-          <IonItem href={`/admin/blog`}>
+          {/* <IonItem
+            routerDirection="forward"
+            routerOptions={{
+              unmount: true,
+            }}
+            routerLink={`/admin/blog`}
+          >
             <IonIcon
               aria-hidden="true"
               icon={newspaperOutline}
@@ -70,8 +90,14 @@ export const SidebarAdmin = ({ id }: { id: string }) => {
             >
               Blog
             </IonLabel>
-          </IonItem>
-          <IonItem href={`/admin/category`}>
+          </IonItem> */}
+          <IonItem
+            routerDirection="forward"
+            routerOptions={{
+              unmount: true,
+            }}
+            routerLink={`/admin/category`}
+          >
             <IonIcon
               aria-hidden="true"
               icon={radioOutline}
@@ -93,7 +119,13 @@ export const SidebarAdmin = ({ id }: { id: string }) => {
               Category
             </IonLabel>
           </IonItem>
-          <IonItem href={`/admin/history-purchase`}>
+          <IonItem
+            routerDirection="forward"
+            routerOptions={{
+              unmount: true,
+            }}
+            routerLink={`/admin/history-purchase`}
+          >
             <IonIcon
               aria-hidden="true"
               icon={bagHandleOutline}

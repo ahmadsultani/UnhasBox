@@ -1,4 +1,4 @@
-import { auth, db } from "@/config/firebase";
+import { db } from "@/config/firebase";
 import { TProduct } from "@/types/product.type";
 import {
   DocumentReference,
@@ -15,17 +15,16 @@ import {
 } from "firebase/firestore";
 import { TCart, TCartForm, TCartResponse } from "@/types/cart.type";
 import { FirebaseError } from "firebase/app";
+import Cookies from "js-cookie";
+import { TUser } from "@/types/user.type";
 
 export const getAllCart = async () => {
-  const currentUser = auth.currentUser;
+  const userCookies = Cookies.get("user");
+  const user = userCookies ? (JSON.parse(userCookies) as TUser) : undefined;
 
-  if (!currentUser)
-    throw new FirebaseError("auth/user-not-found", "User not found");
+  if (!user) throw new FirebaseError("auth/user-not-found", "User not found");
 
-  const q = query(
-    collection(db, "cart"),
-    where("userId", "==", currentUser.uid),
-  );
+  const q = query(collection(db, "cart"), where("userId", "==", user.uid));
 
   const querySnap = await getDocs(q);
 
@@ -117,15 +116,16 @@ export const getCartById = async (id: string) => {
 };
 
 export const addToCart = async (data: TCartForm) => {
-  const currentUser = auth.currentUser;
+  const userCookies = Cookies.get("user");
+  const user = userCookies ? (JSON.parse(userCookies) as TUser) : undefined;
 
-  if (!currentUser) return false;
+  if (!user) return false;
 
   await setDoc(
-    doc(db, "cart", `${currentUser.uid}_${data.productId}`),
+    doc(db, "cart", `${user.uid}_${data.productId}`),
     {
       ...data,
-      userId: currentUser.uid,
+      userId: user.uid,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     },
@@ -136,11 +136,12 @@ export const addToCart = async (data: TCartForm) => {
 };
 
 export const checkCartExists = async (productId: string) => {
-  const currentUser = auth.currentUser;
+  const userCookies = Cookies.get("user");
+  const user = userCookies ? (JSON.parse(userCookies) as TUser) : undefined;
 
-  if (!currentUser) return false;
+  if (!user) return false;
 
-  const docRef = doc(db, "cart", `${currentUser.uid}_${productId}`);
+  const docRef = doc(db, "cart", `${user.uid}_${productId}`);
 
   const querySnap = await getDoc(docRef);
 
@@ -154,7 +155,8 @@ export const updateCartQuantity = async (
   const docRef = doc(db, "cart", id);
   const docSnap = await getDoc(docRef);
 
-  if (!docSnap.exists()) return;
+  if (!docSnap.exists())
+    throw new FirebaseError("cart/not-found", "Cart not found");
 
   const data = docSnap.data();
 
@@ -167,7 +169,7 @@ export const updateCartQuantity = async (
       quantity: data.quantity - 1,
     });
   } else if (type === "delete") {
-    await deleteDoc(docRef);
+    await deleteFromCart(id);
   }
 };
 

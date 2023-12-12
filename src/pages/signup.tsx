@@ -9,7 +9,7 @@ import {
   IonIcon,
 } from "@ionic/react";
 
-import { useHistory } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 
 import { Controller, useForm } from "react-hook-form";
 import { signup } from "@/services/auth";
@@ -54,6 +54,13 @@ export const Signup: React.FC = () => {
   });
 
   const { control, handleSubmit } = useForm<TSignupForm>();
+
+  const userCookies = Cookies.get("user");
+  const user = userCookies ? (JSON.parse(userCookies) as TUser) : undefined;
+
+  if (user) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <div className="signup">

@@ -17,8 +17,10 @@ export const getAllBlog = async () => {
   const blogs: TBlog[] = [];
 
   const blogPromises = querySnapshot.docs.map(async (doc) => {
-    const data = doc.data() as TBlog;
-    return { ...data, id: doc.id };
+    const data = doc.data();
+    data.createdAt = data.createdAt.toDate();
+    data.updatedAt = data.updatedAt.toDate();
+    return { ...data, id: doc.id } as TBlog;
   });
 
   const blogResults = await Promise.all(blogPromises);
@@ -35,9 +37,12 @@ export const getOneBlog = async (id: string) => {
     throw new Error("Blog not found!");
   }
 
-  const data = docSnap.data() as TBlog;
+  const data = docSnap.data();
 
-  const blog: TBlog = { ...data, id: docRef.id };
+  data.createdAt = data.createdAt.toDate();
+  data.updatedAt = data.updatedAt.toDate();
+
+  const blog = { ...data, id: docRef.id } as TBlog;
 
   return blog;
 };

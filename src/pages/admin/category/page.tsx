@@ -216,7 +216,9 @@ export const AdminCategory = () => {
         <IonHeader>
           <IonToolbar>
             <IonMenuButton slot="start"></IonMenuButton>
-            <IonTitle>Blog</IonTitle>
+            <IonTitle>
+              <b>Category</b>
+            </IonTitle>
           </IonToolbar>
         </IonHeader>
       )}

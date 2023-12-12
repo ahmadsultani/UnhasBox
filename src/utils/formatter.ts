@@ -58,6 +58,34 @@ export const formatToDay = (date: string) => {
   }
 };
 
+/**
+ * @param date date string, example: 2021-08-01T00:00:00.000Z or just 2021-08-01
+ * @returns formatted date to today, yesterday, n days ago, or full date
+ */
+export const formatToDayAgo = (date: string) => {
+  const currentDate = new Date();
+  const providedDate = new Date(date);
+
+  currentDate.setHours(0, 0, 0, 0);
+  providedDate.setHours(0, 0, 0, 0);
+
+  const yesterday = new Date(currentDate);
+  yesterday.setDate(currentDate.getDate() - 1);
+
+  const diffTime = Math.abs(currentDate.getTime() - providedDate.getTime());
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  if (providedDate.getTime() === currentDate.getTime()) {
+    return "Today";
+  } else if (providedDate.getTime() === yesterday.getTime()) {
+    return "Yesterday";
+  } else if (diffDays <= 7) {
+    return `${diffDays} days ago`;
+  } else {
+    return formatDate(date, "full");
+  }
+};
+
 export const formatDateAndTime = (date: string) => {
   return `${formatToHour(date)}, ${formatDate(date, "medium")}`;
 };
