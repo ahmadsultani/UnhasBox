@@ -39,7 +39,9 @@ export const getAllOrder = async (userId?: string) => {
     orders.push(order);
   });
 
-  return orders;
+  return orders.sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  );
 };
 
 export const getOrderById = async (orderId: string) => {

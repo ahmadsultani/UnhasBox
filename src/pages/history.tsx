@@ -20,7 +20,7 @@ export const OrderHistory: React.FC = () => {
     isLoading: isLoadingOrders,
     isError: isErrorOrders,
   } = useQuery({
-    queryKey: ["favorite"],
+    queryKey: ["order"],
     queryFn: () => getAllOrder(user.uid),
   });
 

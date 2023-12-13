@@ -1,7 +1,5 @@
 import { db } from "@/config/firebase";
-import { TProduct } from "@/types/product.type";
 import {
-  DocumentReference,
   collection,
   deleteDoc,
   doc,
@@ -17,6 +15,7 @@ import { TCart, TCartForm, TCartResponse } from "@/types/cart.type";
 import { FirebaseError } from "firebase/app";
 import Cookies from "js-cookie";
 import { TUser } from "@/types/user.type";
+import { getOneProduct } from "./product";
 
 export const getAllCart = async () => {
   const userCookies = Cookies.get("user");
@@ -42,16 +41,7 @@ export const getAllCart = async () => {
   const cart = querySnap.docs.map(async (d) => {
     const data = d.data();
 
-    const productRef = doc(db, "product", data.productId);
-    const productSnap = await getDoc(productRef);
-    const productData = productSnap.data();
-
-    const product = {
-      ...productData,
-      id: productSnap.id,
-      createdAt: productData?.createdAt?.toDate(),
-      updatedAt: productData?.updatedAt?.toDate(),
-    } as TProduct;
+    const product = await getOneProduct(data.productId);
 
     data.createdAt = data.createdAt.toDate();
     data.updatedAt = data.updatedAt.toDate();
@@ -83,26 +73,7 @@ export const getCartById = async (id: string) => {
 
   const data = docSnap.data();
 
-  const productRef = doc(db, "product", data.productId);
-  const productSnap = await getDoc(productRef);
-  const productData = productSnap.data();
-
-  const categoryRef = productData?.category as DocumentReference;
-  const categorySnap = await getDoc(categoryRef);
-  const categoryData = categorySnap.data();
-
-  const category = {
-    ...categoryData,
-    id: categorySnap.id,
-  };
-
-  const product = {
-    ...productData,
-    category,
-    id: productSnap.id,
-    createdAt: productData?.createdAt?.toDate(),
-    updatedAt: productData?.updatedAt?.toDate(),
-  } as TProduct;
+  const product = await getOneProduct(data.productId);
 
   data.createdAt = data.createdAt.toDate();
   data.updatedAt = data.updatedAt.toDate();
