@@ -53,10 +53,6 @@ const columns: MRT_ColumnDef<TProduct>[] = [
     header: "Category",
   },
   {
-    accessorKey: "rating",
-    header: "Rating",
-  },
-  {
     accessorKey: "sold",
     header: "Sold",
   },
@@ -241,11 +237,13 @@ export const AdminProduct = () => {
         <IonHeader>
           <IonToolbar>
             <IonMenuButton slot="start"></IonMenuButton>
-            <IonTitle>Product</IonTitle>
+            <IonTitle>
+              <b>Product</b>
+            </IonTitle>
           </IonToolbar>
         </IonHeader>
       )}
-      <IonContent>
+      <IonContent className="ion-padding">
         {renderContent(
           isLoadingProducts
             ? EProductStatus.LOADING

@@ -46,14 +46,15 @@ export const Profile: React.FC = () => {
     },
   });
 
-  const { control, handleSubmit, setValue } = useForm<TUpdateProfileForm>({
-    values: {
-      firstName: user?.firstName || "",
-      lastName: user?.lastName || "",
-      address: user?.address || "",
-      phoneNumber: user?.phoneNumber || "",
-    },
-  });
+  const { control, handleSubmit, setValue, formState, reset } =
+    useForm<TUpdateProfileForm>({
+      values: {
+        firstName: user?.firstName || "",
+        lastName: user?.lastName || "",
+        address: user?.address || "",
+        phoneNumber: user?.phoneNumber || "",
+      },
+    });
 
   const [selectedFile, setSelectedFile] = useState<string>();
 
@@ -189,16 +190,31 @@ export const Profile: React.FC = () => {
               style={{
                 display: "flex",
                 justifyContent: "flex-end",
+                gap: "12px",
               }}
+              className="ion-margin-top"
             >
               <IonButton
-                className="ion-margin-top"
                 fill="solid"
                 size="default"
                 type="submit"
+                disabled={!formState.isDirty && !selectedFile}
               >
                 <IonText className="ion-padding-horizontal">Save</IonText>
               </IonButton>
+              {(formState.isDirty || selectedFile) && (
+                <IonButton
+                  fill="solid"
+                  size="default"
+                  color="danger"
+                  onClick={() => {
+                    reset();
+                    setSelectedFile(undefined);
+                  }}
+                >
+                  <IonText className="ion-padding-horizontal">Cancel</IonText>
+                </IonButton>
+              )}
             </IonCol>
           </IonRow>
         </IonGrid>

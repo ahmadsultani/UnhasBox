@@ -1,4 +1,4 @@
-export * from "./blog/page";
+export * from "./blog";
 export * from "./history-purchase/page";
 export * from "./page";
 export * from "./product/page";

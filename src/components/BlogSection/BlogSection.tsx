@@ -1,30 +1,76 @@
-import { IonButton } from "@ionic/react";
+import { IonButton, IonSpinner, IonText } from "@ionic/react";
 
 import { BlogCard } from "@/components/Blog";
 
-import { blogs } from "@/data/fakeBlogData";
-
 import "@/styles/blog-section.css";
+import { getAllBlog } from "@/services/blog";
+import { useQuery } from "@tanstack/react-query";
 
 export const BlogSection: React.FC = () => {
-  const firstFourBlogs = blogs.slice(0, 4);
+  const {
+    data: blogs,
+    isLoading: isLoadingBlogs,
+    isError: isErrorBlogs,
+  } = useQuery({
+    queryKey: ["blog"],
+    queryFn: getAllBlog,
+  });
+
   return (
     <main className="blog-section">
       <h1 className="blog-section__title">Hot News</h1>
-      <section className="blog-section__container">
-        {firstFourBlogs.map((blog) => (
+      {isLoadingBlogs ? (
+        <div className="empty-container">
+          <IonSpinner
+            name="crescent"
+            color="primary"
+            style={{ transform: "scale(1.4)" }}
+          />
+        </div>
+      ) : isErrorBlogs ? (
+        <div className="empty-container">
+          <IonText>
+            <p
+              className="ion-text-center"
+              style={{ fontSize: "1.5em", fontWeight: 600 }}
+            >
+              Something went wrong!
+            </p>
+          </IonText>
+        </div>
+      ) : blogs && blogs.length > 0 ? (
+        <main className="blog__container ion-padding">
+          {blogs.slice(0, 4).map((blog) => (
             <BlogCard
               key={blog.id}
-              slug={blog.slug}
+              slug={blog.id}
               title={blog.title}
-              tags={blog.tags}
               content={blog.content}
-              image={blog.image}
+              image={blog.thumbnail}
+              tags={blog.tags}
+              author={blog.author}
+              createdAt={blog.createdAt}
             />
-        ))}
-      </section>
+          ))}
+        </main>
+      ) : (
+        <div className="empty-container">
+          <IonText className="ion-text-center">
+            <p style={{ fontSize: "1.5em", fontWeight: 600 }}>
+              No Blogs found!
+            </p>
+          </IonText>
+        </div>
+      )}
       <section>
-        <IonButton href="/blog" fill="solid" color='primary' className="blog-section__button">Explore Blog</IonButton>
+        <IonButton
+          href="/blog"
+          fill="solid"
+          color="primary"
+          className="blog-section__button"
+        >
+          Explore Blog
+        </IonButton>
       </section>
     </main>
   );

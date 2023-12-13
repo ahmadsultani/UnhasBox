@@ -14,6 +14,7 @@ import {
   serverTimestamp,
   setDoc,
 } from "firebase/firestore";
+import { checkFavoriteExists } from "./favorite";
 
 export const getAllProduct = async () => {
   const querySnapshot = await getDocs(collection(db, "product"));
@@ -33,7 +34,9 @@ export const getAllProduct = async () => {
     data.createdAt = data.createdAt.toDate();
     data.updatedAt = data.updatedAt.toDate();
 
-    return { ...data, id: doc.id, category } as TProduct;
+    const isFavorite = await checkFavoriteExists(doc.id);
+
+    return { ...data, id: doc.id, category, isFavorite } as TProduct;
   });
 
   const productResults = await Promise.all(productPromises);
@@ -61,7 +64,9 @@ export const getOneProduct = async (id: string) => {
 
   const category = categorySnap.data() as TCategory;
 
-  const product: TProduct = { ...data, id: docRef.id, category };
+  const isFavorite = await checkFavoriteExists(id);
+
+  const product: TProduct = { ...data, id, category, isFavorite };
 
   return product;
 };

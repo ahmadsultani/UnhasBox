@@ -16,9 +16,11 @@ export const Navbar: React.FC = () => {
   return (
     <IonHeader>
       {!isDesktop ? (
-        <IonToolbar className="ion-padding-horizontal">
+        <IonToolbar>
           <IonTitle slot="start">
-            <IonText color="dark navbar__title">UnhasBox</IonText>
+            <IonText color="dark" className="ion-padding-start navbar__title">
+              UnhasBox
+            </IonText>
           </IonTitle>
           <IonMenuButton slot="end"></IonMenuButton>
         </IonToolbar>

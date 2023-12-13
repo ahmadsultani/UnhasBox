@@ -1,8 +1,14 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useHistory } from "react-router-dom";
 
-import { IonButton, IonIcon, IonImg, IonInput, IonSpinner } from "@ionic/react";
+import {
+  IonButton,
+  IonIcon,
+  IonImg,
+  IonInput,
+  IonSpinner,
+  useIonRouter,
+} from "@ionic/react";
 import { Controller, useForm } from "react-hook-form";
 import Cookies from "js-cookie";
 
@@ -14,9 +20,10 @@ import { TLoginForm } from "@/types/form.type";
 
 import "@/styles/login.css";
 import { eye, eyeOff } from "ionicons/icons";
+import { Redirect } from "react-router";
 
 export const Login: React.FC = () => {
-  const history = useHistory();
+  const router = useIonRouter();
   const queryClient = useQueryClient();
 
   const { successToast, errorToast } = useToast();
@@ -33,7 +40,7 @@ export const Login: React.FC = () => {
       successToast("Logged in successfully");
       setIsLoading(false);
       setTimeout(() => {
-        history.push("/");
+        router.push("/", "forward");
       }, 2000);
     },
     onError: (error) => {
@@ -48,6 +55,13 @@ export const Login: React.FC = () => {
   });
 
   const { control, handleSubmit } = useForm<TLoginForm>();
+
+  const userCookies = Cookies.get("user");
+  const user = userCookies ? (JSON.parse(userCookies) as TUser) : undefined;
+
+  if (user) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <div className="login">

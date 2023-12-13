@@ -14,9 +14,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       <Sidebar contentId="main-content" />
       <IonPage id="main-content">
         <Navbar />
-        <IonContent fullscreen className="ion-padding">
-          {children}
-        </IonContent>
+        <IonContent fullscreen>{children}</IonContent>
         <Footer />
       </IonPage>
     </>

@@ -40,6 +40,7 @@ export const Navitems: React.FC = () => {
         {navItems.map((item, index) => (
           <IonButton
             key={index}
+            routerOptions={{ unmount: true }}
             href={item.href}
             slot="start"
             color={
@@ -65,34 +66,55 @@ export const Navitems: React.FC = () => {
           className="navbar__searchbar"
         ></IonSearchbar>
 
-        <IonButton color="primary" fill="clear" href="/favorite">
+        <IonButton
+          color="primary"
+          fill="clear"
+          routerOptions={{ unmount: true }}
+          href="/favorite"
+        >
           <IonIcon slot="icon-only" icon={heart} />
         </IonButton>
 
-        <IonButton color="primary" fill="clear" href="/cart">
+        <IonButton
+          color="primary"
+          fill="clear"
+          routerOptions={{ unmount: true }}
+          href="/cart"
+        >
           <IonIcon slot="icon-only" icon={cart} />
         </IonButton>
       </IonButtons>
       {!user ? (
         <IonButtons slot="end" className="ion-padding-horizontal ">
-          <IonButton href="/login" color="primary" fill="solid" shape="round">
+          <IonButton
+            routerOptions={{ unmount: true }}
+            href="/login"
+            color="primary"
+            fill="solid"
+            shape="round"
+          >
             <IonText className="ion-padding-horizontal navbar__login-text">
               Login
             </IonText>
           </IonButton>
-          <IonButton href="/signup" color="primary">
+          <IonButton
+            routerOptions={{ unmount: true }}
+            href="/signup"
+            color="primary"
+          >
             Signup
           </IonButton>
         </IonButtons>
       ) : (
         user && (
-          <IonItem slot="end" className="ion-padding-horizontal" lines="none">
-            <IonText color="dark" className="ion-padding-horizontal">
+          <IonItem slot="end" className="ion-padding-end" lines="none">
+            <IonText color="dark" className="ion-padding-end">
               Hi, {user.firstName}!
             </IonText>
             <IonButton
               className="ion-no-padding"
               shape="round"
+              routerOptions={{ unmount: true }}
               href="/profile"
               fill="clear"
             >
@@ -108,5 +130,6 @@ export const Navitems: React.FC = () => {
 export const navItems = [
   { label: "Home", href: "/", icon: homeOutline },
   { label: "Product", href: "/product", icon: cubeOutline },
-  { label: "Blog", href: "/blog", icon: newspaperOutline },
+  // { label: "Blog", href: "/blog", icon: newspaperOutline },
+  { label: "Order", href: "/order", icon: newspaperOutline },
 ];

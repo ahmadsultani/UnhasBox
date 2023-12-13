@@ -13,6 +13,7 @@ export type TCartForm = Omit<
   "id" | "product" | "createdAt" | "updatedAt"
 > & {
   productId: string;
+  quantity: number;
 };
 
 export type TCartResponse = {

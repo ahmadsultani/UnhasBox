@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useHistory } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 
 import { IonButton, IonIcon, IonInput, IonSpinner } from "@ionic/react";
 import { Controller, useForm } from "react-hook-form";
@@ -48,6 +48,13 @@ export const AdminLogin: React.FC = () => {
   });
 
   const { control, handleSubmit } = useForm<TLoginForm>();
+
+  const userCookies = Cookies.get("user");
+  const user = userCookies ? (JSON.parse(userCookies) as TUser) : undefined;
+
+  if (user && user.role === "admin") {
+    return <Redirect to="/admin" />;
+  }
 
   return (
     <div className="login">
@@ -127,9 +134,6 @@ export const AdminLogin: React.FC = () => {
                   )}
                 />
               </section>
-              <a href="/forgot-password" className="login__forgot">
-                Forgot Password?
-              </a>
               <IonButton
                 expand="block"
                 className="login__button"
@@ -138,11 +142,6 @@ export const AdminLogin: React.FC = () => {
               >
                 {isLoading ? <IonSpinner name="circles" /> : "Login"}
               </IonButton>
-              <section className="login__signup">
-                <p>
-                  Don&apos;t have an account? <a href="/signup">Sign Up</a>
-                </p>
-              </section>
             </fieldset>
           </form>
         </section>

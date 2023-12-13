@@ -9,7 +9,15 @@
   text-align: center;
 }
 
-.order-item {
+.order {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.order__item {
   border: 1px solid #eee;
   margin: 10px 0;
   padding: 15px;
@@ -17,79 +25,46 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.order-product-info {
+.order__product-info {
   display: flex;
   gap: 24px;
   width: 100%;
   justify-content: space-between;
 }
-.order-product-overview {
+
+.order__product-overview {
   display: flex;
   align-items: center;
   gap: 20px;
 }
-.order-product-image {
-  max-width: 110px;
-  height: 110px;
-  border: 1px solid #d1d1d1;
-  margin-bottom: 8px;
-  margin-top: 8px;
+
+.order__product-image {
+  width: 100px;
+  height: 100px;
 }
 
-.order-product-details {
+.order__product-details {
   display: flex;
   flex-direction: column;
   height: 100px;
   justify-content: space-between;
 }
 
-.order-product-price {
+.order__product-price {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
-.order-product-details-overview {
+
+.order__product-details-overview {
   display: flex;
   flex-direction: column;
-}
-
-.order-product-details h3 {
-  font-size: 18px;
-  margin-bottom: 5px;
-  color: #333;
-}
-
-.order-product-details p {
-  font-size: 14px;
-  margin-bottom: 5px;
-  color: #666;
-}
-
-.order-product-details h4 {
-  font-size: 16px;
-  font-weight: bold;
-  color: #e44d26;
 }
 
 .quantity-section {
   display: flex;
   align-items: center;
   gap: 20px;
-}
-
-.quantity-button {
-  border-radius: 100%;
-}
-
-/* Summary section */
-.summary-section {
-  display: flex;
-  flex-direction: column;
-  width: 30%;
-  height: 150px;
-  gap: 8px;
-  border: 1px solid #d1d1d1;
-  padding: 16px;
 }
 
 .total-orders {
@@ -101,15 +76,15 @@
 
 /* Responsive design */
 @media screen and (max-width: 1024px) {
-  .order-product-info {
+  .order__product-info {
     flex-direction: column;
   }
 
-  .order-product-image {
+  .order__product-image {
     width: 100%;
   }
 
-  .order-product-details {
+  .order__product-details {
     width: 100%;
     text-align: center;
   }

@@ -46,7 +46,6 @@
 .login__title-1 {
   display: flex;
   font-size: 19px;
-  font-family: sans-serif;
   color: black;
 }
 
@@ -54,7 +53,6 @@
   display: flex;
   font-size: 19px;
   font-weight: bold;
-  font-family: Verdana;
   line-height: 1.5;
   color: black;
 }
@@ -62,7 +60,6 @@
 .login__title-3 {
   font-size: 28px;
   font-weight: 800;
-  font-family: sans-serif;
   line-height: 2;
   color: #407bff;
 }

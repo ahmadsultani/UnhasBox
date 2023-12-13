@@ -88,9 +88,8 @@
 .product-detail__header-info {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   font-size: 14px;
-  gap: px;
+  gap: 1.5em;
   display: flex;
   color: var(--ion-color-medium);
 }
