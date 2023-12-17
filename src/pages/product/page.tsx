@@ -40,8 +40,8 @@ export const Product: React.FC = () => {
             </IonText>
             <IonText color="dark">
               <h5 className="ion-text-center">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Molestias, doloremque!
+                Find products that suits you the most. You can find anything
+                related to Unhas here!
               </h5>
             </IonText>
           </section>

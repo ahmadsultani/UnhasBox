@@ -26,14 +26,16 @@ export const Favorite: React.FC = () => {
           />
         </div>
       ) : isErrorProducts ? (
-        <IonText>
-          <p
-            className="ion-text-center"
-            style={{ marginTop: "3em", fontSize: "1.5em", fontWeight: 600 }}
-          >
-            Something went wrong!
-          </p>
-        </IonText>
+        <div className="empty-container">
+          <IonText>
+            <p
+              className="ion-text-center"
+              style={{ marginTop: "3em", fontSize: "1.5em", fontWeight: 600 }}
+            >
+              Something went wrong!
+            </p>
+          </IonText>
+        </div>
       ) : products && products.length > 0 ? (
         <section className="product">
           <header className="product__header ion-padding">

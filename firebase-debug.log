@@ -1,0 +1,82 @@
+[debug] [2023-12-17T01:17:04.746Z] ----------------------------------------------------------------------
+[debug] [2023-12-17T01:17:04.747Z] Command:       /home/ziru/.nvm/versions/node/v18.18.2/bin/node /home/ziru/.nvm/versions/node/v18.18.2/bin/firebase deploy --debug
+[debug] [2023-12-17T01:17:04.747Z] CLI Version:   13.0.0
+[debug] [2023-12-17T01:17:04.747Z] Platform:      linux
+[debug] [2023-12-17T01:17:04.747Z] Node Version:  v18.18.2
+[debug] [2023-12-17T01:17:04.748Z] Time:          Sun Dec 17 2023 09:17:04 GMT+0800 (Central Indonesia Time)
+[debug] [2023-12-17T01:17:04.748Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-12-17T01:17:04.793Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-12-17T01:17:04.794Z] > authorizing via signed-in user (ahmadsultanidayanullah@gmail.com)
+[debug] [2023-12-17T01:17:04.794Z] [iam] checking project sistem-informasi-8 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2023-12-17T01:17:04.795Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/sistem-informasi-8:testIamPermissions [none]
+[debug] [2023-12-17T01:17:04.795Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/sistem-informasi-8:testIamPermissions x-goog-quota-user=projects/sistem-informasi-8
+[debug] [2023-12-17T01:17:04.796Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/sistem-informasi-8:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2023-12-17T01:17:06.207Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/sistem-informasi-8:testIamPermissions 200
+[debug] [2023-12-17T01:17:06.208Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/sistem-informasi-8:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2023-12-17T01:17:06.209Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/sistem-informasi-8 [none]
+[debug] [2023-12-17T01:17:06.999Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/sistem-informasi-8 200
+[debug] [2023-12-17T01:17:07.000Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/sistem-informasi-8 {"projectId":"sistem-informasi-8","projectNumber":"662548231614","displayName":"sistem-informasi-8","name":"projects/sistem-informasi-8","resources":{"hostingSite":"sistem-informasi-8","storageBucket":"sistem-informasi-8.appspot.com","locationId":"asia-southeast2"},"state":"ACTIVE","etag":"1_cbda200f-7ba8-4759-8401-a100edfd694b"}
+[info] 
+[info] === Deploying to 'sistem-informasi-8'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2023-12-17T01:17:07.003Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/sistem-informasi-8/versions [none]
+[debug] [2023-12-17T01:17:07.004Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/sistem-informasi-8/versions {"status":"CREATED","labels":{"deployment-tool":"cli-firebase"}}
+[debug] [2023-12-17T01:17:09.091Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/sistem-informasi-8/versions 200
+[debug] [2023-12-17T01:17:09.091Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/sistem-informasi-8/versions {"name":"projects/662548231614/sites/sistem-informasi-8/versions/de6640276174f47a","status":"CREATED","config":{},"labels":{"deployment-tool":"cli-firebase"}}
+[info] i  hosting[sistem-informasi-8]: beginning deploy... 
+[info] i  hosting[sistem-informasi-8]: found 22 files in dist 
+[debug] [2023-12-17T01:17:09.099Z] [hosting] uploading with 200 concurrency
+[debug] [2023-12-17T01:17:09.100Z] [hosting] hash cache [ZGlzdA] not populated
+[debug] [2023-12-17T01:17:09.188Z] [hosting] hash cache [ZGlzdA] stored for 22 files
+[debug] [2023-12-17T01:17:09.188Z] [hosting][hash queue][FINAL] {"max":84,"min":14,"avg":21.136363636363637,"active":0,"complete":22,"success":22,"errored":0,"retried":0,"total":22,"elapsed":87}
+[debug] [2023-12-17T01:17:09.189Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/662548231614/sites/sistem-informasi-8/versions/de6640276174f47a:populateFiles [none]
+[debug] [2023-12-17T01:17:09.189Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/662548231614/sites/sistem-informasi-8/versions/de6640276174f47a:populateFiles {"files":{"/404.html":"b7bab6b83fa074653ff28c8d2a64135d3434575f70a12ab3d3ba8080461b9537","/favicon.png":"b1478580497a5822da29f6e15dcb675c88e05446c6b3d13001abb36cfffd80a9","/index.html":"8c2c645b03438dc75ddfbce6b3efa4aeb56ff8733ad8bbeb435c3da90b8ffb8d","/manifest.json":"315c48dd51014f2f7f2f135693fcc60b0abdd3e494e664240cba1ac1e1961d47","/assets/focus-visible-9c13edeb.js":"11c57e7f8a3a0138cc50ff7d77667afa69ce70d67ac3d9f341f9127892155e92","/assets/focus-visible-legacy-b3e947fe.js":"72b934c8e6f3da2be2e09fea9326bd5552e53cbe8a0aeaec576ba47d6484c17d","/assets/index9-6ef950ac.js":"3caf7852247afa59b87735b641566aa3d43306e6a79163665be1335566dced23","/assets/input-shims-legacy-605afe68.js":"04a306185f103c694b14cf71bd650a8af35df9c86927fcbc375d31fab83c3bc7","/assets/index-c493d3d2.css":"ecca18b7fea12517d0b6c1a6f47c24b1d543fc4321a9642e54ed3c4906bbc393","/assets/index9-legacy-e7b06b6e.js":"88d2ee57ff0bdf0a9c45011bd2610711fb82c42bd1c5e0b27f800dc4a8a21493","/assets/input-shims-76fe8a0d.js":"5b8a18861d72a9f8f5005048457259dc0b14dfe4f7bfda6d514e2b1f73eaf681","/assets/ios.transition-legacy-19dc7192.js":"9011d7cf4b6192c4814b2f85649f1a233cd3a8e64bb206c225c10e3a83385533","/assets/md.transition-legacy-c2de9596.js":"deeaceecd61d5a96ca6d97c7958dcdb53b59d5a8362510375ea62c83e1d70b50","/assets/md.transition-52a37eb3.js":"10d233264b397f0892cecf45e26841eb78dffa24b8e62e15203c638661bc0a93","/assets/ios.transition-ce27a3c9.js":"1aac6b6cc18dcc93bed07dcaca82666200ff25c0ddc7dacc9de857e35131f372","/assets/status-tap-7b2e2436.js":"8e2d2d71b9fc05b998ae44e48ba83555fd72a04f3f6aabf069c61c649a20298e","/assets/swipe-back-180593dc.js":"474347082420acb24c4c431ccf28de716289e79f4856659d99d81b7eb919f2a5","/assets/swipe-back-legacy-cb89cb34.js":"30bf1cc3e08be4f14fdd571c0aae798577de3227efcf93bfec70ef28635b26b6","/assets/status-tap-legacy-fb266e8d.js":"6b20c873fc9a46a1251e77461c58acca064a17fafc3c3da39669a3344fe4a795","/assets/polyfills-legacy-1f99668b.js":"e6fc0c7d119cda832ec233ae499832daf056ce1c0cb16becfe813df460c7c13e","/assets/index-65ff2cd9.js":"0ad405b947bddadc904cd748ecb50f705414d244845a68e4b347fc20764c3142","/assets/index-legacy-9d18ac75.js":"8c2c844980a6b85192f0a35266875da041400a6927a237140d9c2df2706419f3"}}
+[debug] [2023-12-17T01:17:10.269Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/662548231614/sites/sistem-informasi-8/versions/de6640276174f47a:populateFiles 200
+[debug] [2023-12-17T01:17:10.269Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/662548231614/sites/sistem-informasi-8/versions/de6640276174f47a:populateFiles {"uploadUrl":"https://upload-firebasehosting.googleapis.com/upload/sites/sistem-informasi-8/versions/de6640276174f47a/files"}
+[debug] [2023-12-17T01:17:10.269Z] [hosting][populate queue][FINAL] {"max":1082,"min":1082,"avg":1082,"active":0,"complete":1,"success":1,"errored":0,"retried":0,"total":1,"elapsed":1082}
+[debug] [2023-12-17T01:17:10.269Z] [hosting] uploads queued: 0
+[debug] [2023-12-17T01:17:10.270Z] [hosting][upload queue][FINAL] {"max":0,"min":9999999999,"avg":0,"active":0,"complete":0,"success":0,"errored":0,"retried":0,"total":0,"elapsed":1702775830270}
+[info] i  hosting: upload complete 
+[info] ✔  hosting[sistem-informasi-8]: file upload complete 
+[debug] [2023-12-17T01:17:10.270Z] [hosting] deploy completed after 1177ms
+[debug] [2023-12-17T01:17:10.270Z] [
+  {
+    "config": {
+      "public": "dist",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ],
+      "site": "sistem-informasi-8"
+    },
+    "version": "projects/662548231614/sites/sistem-informasi-8/versions/de6640276174f47a"
+  }
+]
+[info] i  hosting[sistem-informasi-8]: finalizing version... 
+[debug] [2023-12-17T01:17:10.271Z] >>> [apiv2][query] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/sistem-informasi-8/versions/de6640276174f47a updateMask=status%2Cconfig
+[debug] [2023-12-17T01:17:10.272Z] >>> [apiv2][body] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/sistem-informasi-8/versions/de6640276174f47a {"status":"FINALIZED","config":{"rewrites":[{"glob":"**","path":"/index.html"}]}}
+[debug] [2023-12-17T01:17:11.323Z] <<< [apiv2][status] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/sistem-informasi-8/versions/de6640276174f47a 200
+[debug] [2023-12-17T01:17:11.323Z] <<< [apiv2][body] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/sistem-informasi-8/versions/de6640276174f47a {"name":"projects/662548231614/sites/sistem-informasi-8/versions/de6640276174f47a","status":"FINALIZED","config":{"rewrites":[{"glob":"**","path":"/index.html"}]},"labels":{"deployment-tool":"cli-firebase"},"createTime":"2023-12-17T01:17:07.649211Z","createUser":{"email":"ahmadsultanidayanullah@gmail.com"},"finalizeTime":"2023-12-17T01:17:10.927114Z","finalizeUser":{"email":"ahmadsultanidayanullah@gmail.com"}}
+[debug] [2023-12-17T01:17:11.323Z] [hosting] finalized version for sistem-informasi-8:[object Object]
+[info] ✔  hosting[sistem-informasi-8]: version finalized 
+[info] i  hosting[sistem-informasi-8]: releasing new version... 
+[debug] [2023-12-17T01:17:11.324Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/sistem-informasi-8/channels/live/releases versionName=projects%2F662548231614%2Fsites%2Fsistem-informasi-8%2Fversions%2Fde6640276174f47a
+[debug] [2023-12-17T01:17:11.324Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/sistem-informasi-8/channels/live/releases {}
+[debug] [2023-12-17T01:17:12.356Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/sistem-informasi-8/channels/live/releases 200
+[debug] [2023-12-17T01:17:12.356Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/sistem-informasi-8/channels/live/releases {"name":"projects/662548231614/sites/sistem-informasi-8/channels/live/releases/1702775831401000","version":{"name":"projects/662548231614/sites/sistem-informasi-8/versions/de6640276174f47a","status":"FINALIZED","config":{"rewrites":[{"glob":"**","path":"/index.html"}]},"labels":{"deployment-tool":"cli-firebase"},"createTime":"2023-12-17T01:17:07.649211Z","createUser":{"email":"ahmadsultanidayanullah@gmail.com","imageUrl":"https://lh3.googleusercontent.com/a/ACg8ocLxl1dmZadLdU_pWJXQl7GIWFpI3pTzlb7qqcOrAUl8zw"},"finalizeTime":"2023-12-17T01:17:10.927114Z","finalizeUser":{"email":"ahmadsultanidayanullah@gmail.com","imageUrl":"https://lh3.googleusercontent.com/a/ACg8ocLxl1dmZadLdU_pWJXQl7GIWFpI3pTzlb7qqcOrAUl8zw"}},"type":"DEPLOY","releaseTime":"2023-12-17T01:17:11.401Z","releaseUser":{"email":"ahmadsultanidayanullah@gmail.com","imageUrl":"https://lh3.googleusercontent.com/a/ACg8ocLxl1dmZadLdU_pWJXQl7GIWFpI3pTzlb7qqcOrAUl8zw"}}
+[debug] [2023-12-17T01:17:12.356Z] [hosting] release: {"name":"projects/662548231614/sites/sistem-informasi-8/channels/live/releases/1702775831401000","version":{"name":"projects/662548231614/sites/sistem-informasi-8/versions/de6640276174f47a","status":"FINALIZED","config":{"rewrites":[{"glob":"**","path":"/index.html"}]},"labels":{"deployment-tool":"cli-firebase"},"createTime":"2023-12-17T01:17:07.649211Z","createUser":{"email":"ahmadsultanidayanullah@gmail.com","imageUrl":"https://lh3.googleusercontent.com/a/ACg8ocLxl1dmZadLdU_pWJXQl7GIWFpI3pTzlb7qqcOrAUl8zw"},"finalizeTime":"2023-12-17T01:17:10.927114Z","finalizeUser":{"email":"ahmadsultanidayanullah@gmail.com","imageUrl":"https://lh3.googleusercontent.com/a/ACg8ocLxl1dmZadLdU_pWJXQl7GIWFpI3pTzlb7qqcOrAUl8zw"}},"type":"DEPLOY","releaseTime":"2023-12-17T01:17:11.401Z","releaseUser":{"email":"ahmadsultanidayanullah@gmail.com","imageUrl":"https://lh3.googleusercontent.com/a/ACg8ocLxl1dmZadLdU_pWJXQl7GIWFpI3pTzlb7qqcOrAUl8zw"}}
+[info] ✔  hosting[sistem-informasi-8]: release complete 
+[info] 
+[info] ✔  Deploy complete! 
+[info] 
+[info] Project Console: https://console.firebase.google.com/project/sistem-informasi-8/overview
+[info] Hosting URL: https://sistem-informasi-8.web.app

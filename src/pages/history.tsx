@@ -32,7 +32,7 @@ export const OrderHistory: React.FC = () => {
         <h1 className="ion-text-center cart__title">Order History</h1>
       </IonText>
       {isLoadingOrders ? (
-        <div className="empty-container">
+        <div className="empty-container" style={{ marginTop: "-3em" }}>
           <IonSpinner
             name="crescent"
             color="primary"
@@ -40,14 +40,14 @@ export const OrderHistory: React.FC = () => {
           />
         </div>
       ) : isErrorOrders ? (
-        <IonText>
+        <div className="empty-container">
           <IonText
             className="ion-text-center"
-            style={{ marginTop: "3em", fontSize: "1.5em", fontWeight: 600 }}
+            style={{ marginTop: "-3em", fontSize: "1.5em", fontWeight: 600 }}
           >
             Something went wrong!
           </IonText>
-        </IonText>
+        </div>
       ) : orders && orders.length > 0 ? (
         <IonList className="ion-padding">
           {orders.map((order) => (
@@ -105,14 +105,14 @@ export const OrderHistory: React.FC = () => {
           ))}
         </IonList>
       ) : (
-        <IonText>
+        <div className="empty-container">
           <IonText
             className="ion-text-center"
-            style={{ fontSize: "1.5em", fontWeight: 600 }}
+            style={{ marginTop: "-3em", fontSize: "1.5em", fontWeight: 600 }}
           >
             No orders found!
           </IonText>
-        </IonText>
+        </div>
       )}
       {isOpenModal && (
         <OrderModal

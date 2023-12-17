@@ -1,5 +1,4 @@
 import { TOrder } from "@/types/order.type";
-import React from "react";
 import { AdminModal } from "./AdminModal";
 import { IonImg, IonItem, IonText } from "@ionic/react";
 import { formatPrice } from "@/utils/formatter";
@@ -30,6 +29,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
             key={product.product.id}
             className="cart__card-product-item"
             routerLink={`/product/${product.product.id}`}
+            onClick={onClose}
           >
             <IonImg
               alt="product"

@@ -72,8 +72,8 @@
     "vitest": "^0.32.2"
   },
   "lint-staged": {
-    "*.{js,ts,jsx,tsx,css,scss,md,svg}": "pnpm format",
-    "*.{js,ts,jsx,tsx}": "pnpm lint"
+    "*.{ts,tsx,css,scss,md,svg}": "pnpm format",
+    "*.{ts,tsx}": "pnpm lint"
   },
   "description": "An Ionic project"
 }
