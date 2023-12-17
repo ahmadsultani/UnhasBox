@@ -23,11 +23,30 @@ import {
 } from "ionicons/icons";
 
 import { TUser } from "@/types/user.type";
+import { useState } from "react";
+import { useQueryParams } from "@/hooks/useQueryParams";
 
 export const Navitems: React.FC = () => {
   const router = useIonRouter();
   const userCookies = Cookies.get("user");
   const user: TUser = userCookies ? JSON.parse(userCookies) : undefined;
+
+  const query = useQueryParams();
+  const searchQuery = query.get("search");
+
+  const [search, setSearch] = useState(searchQuery ?? "");
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLIonSearchbarElement>) => {
+    if (e.key === "Enter") {
+      if (search === "") {
+        router.push("/product", "forward", "push", { unmount: false });
+      }
+
+      router.push(`/product?search=${search}`, "forward", "push", {
+        unmount: false,
+      });
+    }
+  };
 
   return (
     <IonToolbar>
@@ -64,7 +83,10 @@ export const Navitems: React.FC = () => {
           placeholder="Search here"
           autoFocus
           className="navbar__searchbar"
-        ></IonSearchbar>
+          value={search}
+          onIonInput={(e: CustomEvent) => setSearch(e.detail.value)}
+          onKeyDown={handleKeyPress}
+        />
 
         <IonButton
           color="primary"
