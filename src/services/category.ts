@@ -9,7 +9,7 @@ import {
   getDoc,
   getDocs,
   serverTimestamp,
-  setDoc,
+  updateDoc,
 } from "firebase/firestore";
 
 export const getAllCategory = async () => {
@@ -63,7 +63,7 @@ export const updateCategory = async ({
   const docRef = doc(db, "category", id);
   const timestamp = serverTimestamp();
 
-  await setDoc(docRef, {
+  await updateDoc(docRef, {
     ...category,
     updatedAt: timestamp,
   });
