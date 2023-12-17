@@ -12,7 +12,7 @@ import {
   getDoc,
   getDocs,
   serverTimestamp,
-  setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { checkFavoriteExists } from "./favorite";
 
@@ -97,7 +97,7 @@ export const updateProduct = async ({ id, product }: TUpdateProductParams) => {
   const categoryRef = doc(db, "category", product.category);
   const timestamp = serverTimestamp();
 
-  await setDoc(docRef, {
+  await updateDoc(docRef, {
     ...product,
     category: categoryRef,
     updatedAt: timestamp,

@@ -31,7 +31,7 @@ export const CategoryDelete: React.FC<CategoryDeleteProps> = ({
     mutationFn: deleteOneCategory,
     retry: 0,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["product"] });
+      queryClient.invalidateQueries({ queryKey: ["category"] });
       successToast("Category deleted successfully");
       onClose();
     },
