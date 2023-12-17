@@ -23,7 +23,12 @@ export const getAllFavoriteProduct = async () => {
   const userCookies = Cookies.get("user");
   const user = userCookies ? (JSON.parse(userCookies) as TUser) : undefined;
 
-  if (!user) return [];
+  if (!user) {
+    throw new FirebaseError(
+      "auth/user-not-authenticated",
+      "You have to login first",
+    );
+  }
 
   const q = query(collection(db, "favorite"), where("userId", "==", user.uid));
 
@@ -37,6 +42,12 @@ export const getAllFavoriteProduct = async () => {
     const productRef = doc(db, "product", productId);
 
     const productSnap = await getDoc(productRef);
+
+    if (!productSnap.exists()) {
+      await deleteDoc(d.ref);
+      return;
+    }
+
     const productData = productSnap.data()!;
 
     const categoryRef = productData.category as DocumentReference;
@@ -59,7 +70,10 @@ export const getAllFavoriteProduct = async () => {
   });
 
   const productResults = await Promise.all(productPromises);
-  products.push(...productResults);
+
+  productResults.forEach((p) => {
+    if (p) products.push(p);
+  });
 
   return products;
 };

@@ -30,7 +30,7 @@ export const Favorite: React.FC = () => {
           <IonText>
             <p
               className="ion-text-center"
-              style={{ marginTop: "3em", fontSize: "1.5em", fontWeight: 600 }}
+              style={{ fontSize: "1.5em", fontWeight: 600 }}
             >
               Something went wrong!
             </p>
