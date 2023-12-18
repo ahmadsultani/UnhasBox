@@ -42,8 +42,8 @@ const columns: MRT_ColumnDef<TOrder>[] = [
     accessorFn: (row) => `${row.user.firstName} ${row.user.lastName}`,
   },
   {
-    header: "Purchaser Email",
-    accessorKey: "user.email",
+    header: "Purchaser ID",
+    accessorKey: "user.uid",
   },
   {
     header: "Total Price",
@@ -102,14 +102,6 @@ export const AdminHistoryPurchase = () => {
     positionActionsColumn: "last",
     muiTablePaperProps: {
       elevation: 0,
-    },
-    initialState: {
-      sorting: [
-        {
-          id: "Created At",
-          desc: false,
-        },
-      ],
     },
     enableFullScreenToggle: false,
     renderTopToolbarCustomActions: () => (
