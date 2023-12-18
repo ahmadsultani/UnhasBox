@@ -7,7 +7,7 @@ import { doc, setDoc, getDoc } from "firebase/firestore";
 
 import { auth, db } from "@/config/firebase";
 
-import { TSigninForm, TSignupForm } from "@/types/form.type";
+import { TLoginForm, TSignupForm } from "@/types/form.type";
 import { TUser } from "@/types/user.type";
 
 export const signup = async (values: TSignupForm) => {
@@ -22,7 +22,7 @@ export const signup = async (values: TSignupForm) => {
     firstName: values.firstName,
     lastName: values.lastName,
     email: values.email,
-    photo_url: "",
+    photoURL: "",
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
@@ -32,7 +32,7 @@ export const signup = async (values: TSignupForm) => {
   return user as TUser;
 };
 
-export const signin = async (values: TSigninForm) => {
+export const login = async (values: TLoginForm) => {
   const userCredentials = await signInWithEmailAndPassword(
     auth,
     values.email,
@@ -50,23 +50,36 @@ export const signin = async (values: TSigninForm) => {
   }
 };
 
+export const loginAdmin = async (values: TLoginForm) => {
+  const userCredentials = await signInWithEmailAndPassword(
+    auth,
+    values.email,
+    values.password,
+  );
+
+  const docRef = doc(db, "user", userCredentials.user.uid);
+  const docSnap = await getDoc(docRef);
+
+  if (!docSnap.exists()) {
+    signOut(auth);
+    throw new Error("User not found!");
+  }
+
+  const user = docSnap.data() as TUser;
+
+  if (user.role !== "admin") {
+    signOut(auth);
+    throw new Error("User not found!");
+  }
+
+  return user;
+};
+
 export const logout = async () => {
   await signOut(auth);
 };
 
 export const getCurrentUser = async () => {
   const user = auth.currentUser;
-
-  if (user) {
-    const docRef = doc(db, "user", user.uid);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      return docSnap.data() as TUser;
-    } else {
-      throw new Error("User not found!");
-    }
-  } else {
-    throw new Error("User not found!");
-  }
+  return user;
 };

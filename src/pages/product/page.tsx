@@ -1,4 +1,10 @@
-import { IonText, IonChip, IonSpinner, IonSkeletonText } from "@ionic/react";
+import {
+  IonText,
+  IonChip,
+  IonSpinner,
+  IonSkeletonText,
+  IonButton,
+} from "@ionic/react";
 
 import { MainLayout } from "@/layouts";
 import { ProductCard } from "@/components/ProductCard";
@@ -8,8 +14,13 @@ import { getAllProduct } from "@/services/product";
 
 import "@/styles/product.css";
 import { getAllCategory } from "@/services/category";
+import { useMemo } from "react";
+import { useQueryParams } from "@/hooks/useQueryParams";
 
 export const Product: React.FC = () => {
+  const query = useQueryParams();
+  const search = query.get("search");
+
   const {
     data: products,
     isLoading: isLoadingProducts,
@@ -28,6 +39,19 @@ export const Product: React.FC = () => {
     queryFn: getAllCategory,
   });
 
+  const filteredProducts = useMemo(() => {
+    if (products && search) {
+      // search for name or category.name
+      return products.filter(
+        (product) =>
+          product.name.toLowerCase().includes(search.toLowerCase()) ||
+          product.category.name.toLowerCase().includes(search.toLowerCase()),
+      );
+    }
+
+    return products;
+  }, [products, search]);
+
   return (
     <MainLayout>
       <section className="product">
@@ -40,8 +64,8 @@ export const Product: React.FC = () => {
             </IonText>
             <IonText color="dark">
               <h5 className="ion-text-center">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Molestias, doloremque!
+                Find products that suits you the most. You can find anything
+                related to Unhas here!
               </h5>
             </IonText>
           </section>
@@ -95,29 +119,47 @@ export const Product: React.FC = () => {
               Something went wrong!
             </p>
           </IonText>
-        ) : products && products.length > 0 ? (
+        ) : filteredProducts && filteredProducts.length > 0 ? (
           <main className="product__container ion-padding">
-            {products.map((product) => (
+            {filteredProducts.map((product) => (
               <ProductCard
                 key={product.id}
-                slug={product.id}
-                title={product.name}
+                id={product.id}
+                name={product.name}
                 category={product.category.name}
                 price={product.price}
-                image={product.image}
-                desc={product.description}
+                image={product.thumbnail}
+                isFavorite={product.isFavorite}
               />
             ))}
           </main>
         ) : (
-          <IonText>
-            <p
-              className="ion-text-center"
-              style={{ marginTop: "3em", fontSize: "1.5em", fontWeight: 600 }}
-            >
-              No products found!
-            </p>
-          </IonText>
+          <>
+            <IonText>
+              <p
+                className="ion-text-center"
+                style={{ marginTop: "4em", fontSize: "1.4em", fontWeight: 400 }}
+              >
+                No products found{search && ` with keyword "${search}"`}!
+              </p>
+            </IonText>
+            {search && (
+              <IonButton
+                fill="outline"
+                mode="ios"
+                className="ion-text-center"
+                routerLink="/product"
+                style={{
+                  margin: "auto",
+                  marginTop: "1em",
+                  fontSize: "1em",
+                  fontWeight: 500,
+                }}
+              >
+                Reset Search
+              </IonButton>
+            )}
+          </>
         )}
       </section>
     </MainLayout>

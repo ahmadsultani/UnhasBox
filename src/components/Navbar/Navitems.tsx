@@ -7,35 +7,70 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
+  useIonRouter,
 } from "@ionic/react";
+
+import Cookies from "js-cookie";
 
 import { CustomAvatar } from "@/components/CustomAvatar";
 
 import {
-  heart,
   cart,
   cubeOutline,
-  newspaperOutline,
+  heart,
   homeOutline,
+  newspaperOutline,
 } from "ionicons/icons";
+
 import { TUser } from "@/types/user.type";
+import { useState } from "react";
+import { useQueryParams } from "@/hooks/useQueryParams";
 
 export const Navitems: React.FC = () => {
-  const localUser = localStorage.getItem("user");
-  const data = localUser ? (JSON.parse(localUser) as TUser) : null;
+  const router = useIonRouter();
+  const userCookies = Cookies.get("user");
+  const user: TUser = userCookies ? JSON.parse(userCookies) : undefined;
+
+  const query = useQueryParams();
+  const searchQuery = query.get("search");
+
+  const [search, setSearch] = useState(searchQuery ?? "");
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLIonSearchbarElement>) => {
+    if (e.key === "Enter") {
+      if (search === "") {
+        router.push("/product", "forward", "push", { unmount: false });
+      }
+
+      router.push(`/product?search=${search}`, "forward", "push", {
+        unmount: false,
+      });
+    }
+  };
 
   return (
     <IonToolbar>
       <IonButtons className="ion-padding" slot="start">
         <IonTitle className="ion-padding-horizontal" slot="start">
-          <IonText color="dark navbar__title">UnhasBox</IonText>
+          <IonText color="dark" className="navbar__title">
+            UnhasBox
+          </IonText>
         </IonTitle>
         {navItems.map((item, index) => (
           <IonButton
             key={index}
+            routerOptions={{ unmount: true }}
             href={item.href}
             slot="start"
-            color="dark"
+            color={
+              item.href !== "/"
+                ? router.routeInfo.pathname.startsWith(item.href)
+                  ? "primary"
+                  : "dark"
+                : router.routeInfo.pathname === item.href
+                  ? "primary"
+                  : "dark"
+            }
             className="ion-padding-horizontal navbar__navitem"
           >
             {item.label}
@@ -48,40 +83,64 @@ export const Navitems: React.FC = () => {
           placeholder="Search here"
           autoFocus
           className="navbar__searchbar"
-        ></IonSearchbar>
+          value={search}
+          onIonInput={(e: CustomEvent) => setSearch(e.detail.value)}
+          onKeyDown={handleKeyPress}
+        />
 
-        <IonButton color="primary" fill="clear" href="/favorite">
+        <IonButton
+          color="primary"
+          fill="clear"
+          routerOptions={{ unmount: true }}
+          href="/favorite"
+        >
           <IonIcon slot="icon-only" icon={heart} />
         </IonButton>
 
-        <IonButton color="primary" fill="clear" href="/cart">
+        <IonButton
+          color="primary"
+          fill="clear"
+          routerOptions={{ unmount: true }}
+          href="/cart"
+        >
           <IonIcon slot="icon-only" icon={cart} />
         </IonButton>
       </IonButtons>
-      {!data ? (
+      {!user ? (
         <IonButtons slot="end" className="ion-padding-horizontal ">
-          <IonButton href="/login" color="primary" fill="solid" shape="round">
+          <IonButton
+            routerOptions={{ unmount: true }}
+            href="/login"
+            color="primary"
+            fill="solid"
+            shape="round"
+          >
             <IonText className="ion-padding-horizontal navbar__login-text">
               Login
             </IonText>
           </IonButton>
-          <IonButton href="/signup" color="primary">
+          <IonButton
+            routerOptions={{ unmount: true }}
+            href="/signup"
+            color="primary"
+          >
             Signup
           </IonButton>
         </IonButtons>
       ) : (
-        data && (
-          <IonItem slot="end" className="ion-padding-horizontal">
-            <IonText color="dark" className="ion-padding-horizontal">
-              Hi, {data.firstName}!
+        user && (
+          <IonItem slot="end" className="ion-padding-end" lines="none">
+            <IonText color="dark" className="ion-padding-end">
+              Hi, {user.firstName}!
             </IonText>
             <IonButton
               className="ion-no-padding"
               shape="round"
+              routerOptions={{ unmount: true }}
               href="/profile"
               fill="clear"
             >
-              <CustomAvatar src={data.photo_url} name={data.firstName} />
+              <CustomAvatar src={user.photoURL ?? ""} name={user.firstName} />
             </IonButton>
           </IonItem>
         )
@@ -93,5 +152,6 @@ export const Navitems: React.FC = () => {
 export const navItems = [
   { label: "Home", href: "/", icon: homeOutline },
   { label: "Product", href: "/product", icon: cubeOutline },
-  { label: "Blog", href: "/blog", icon: newspaperOutline },
+  // { label: "Blog", href: "/blog", icon: newspaperOutline },
+  { label: "Order", href: "/order", icon: newspaperOutline },
 ];

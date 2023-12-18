@@ -5,14 +5,14 @@
   font-size: 16px;
 }
 
-.blog-section__title{
+.blog-section__title {
   font-size: 28px;
   font-weight: 600;
   padding: 0;
   margin: 16px 0 0 0;
 }
 
-.blog-section__container{
+.blog-section__container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 32px;
@@ -20,7 +20,7 @@
   row-gap: 32px;
 }
 
-.blog-section__button{
+.blog-section__button {
   margin: 8px 0 0 0;
 }
 

@@ -1,10 +1,11 @@
-import { IonButton, IonSpinner, IonText } from "@ionic/react";
+import { IonButton, IonIcon, IonSpinner, IonText } from "@ionic/react";
 
 import { ProductCard } from "@/components/ProductCard";
 
 import "@/styles/product-section.css";
 import { useQuery } from "@tanstack/react-query";
 import { getAllProduct } from "@/services/product";
+import { arrowForward } from "ionicons/icons";
 
 export const ProductSection: React.FC = () => {
   const {
@@ -43,37 +44,39 @@ export const ProductSection: React.FC = () => {
           {products.slice(0, 4).map((product) => (
             <ProductCard
               key={product.id}
-              slug={product.id}
-              title={product.name}
+              id={product.id}
+              name={product.name}
               category={product.category.name}
               price={product.price}
-              image={product.image}
-              desc={product.description}
+              image={product.thumbnail}
+              isFavorite={product.isFavorite}
             />
           ))}
         </section>
       ) : (
-        <div className="empty-container">
+        <div className="empty -container">
           <IonText>
             <p
               className="ion-text-center"
-              style={{ marginTop: "3em", fontSize: "1.5em", fontWeight: 600 }}
+              style={{ fontSize: "1.5em", fontWeight: 600 }}
             >
               No products found!
             </p>
           </IonText>
         </div>
       )}
-      <section>
+      <div>
         <IonButton
-          href="/product"
+          routerLink="/product"
           fill="solid"
           color="primary"
-          className="product-section__button"
+          shape="round"
+          mode="ios"
         >
-          Explore Product
+          <IonText className="ion-padding">Explore Product</IonText>
+          <IonIcon icon={arrowForward} />
         </IonButton>
-      </section>
+      </div>
     </main>
   );
 };

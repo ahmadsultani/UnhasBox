@@ -9,5 +9,8 @@ export type TProduct = {
   sold: number;
   rating: number;
   price: number;
-  image: string;
+  thumbnail: string;
+  isFavorite?: boolean;
+  createdAt: string;
+  updatedAt: string;
 };

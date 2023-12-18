@@ -12,4 +12,5 @@ export * from "./success-checkout";
 export * from "./admin/page";
 export * from "./admin/product/page";
 export * from "./admin/blog/page";
-export * from "./admin/historypurchase/page";
+export * from "./admin/history-purchase/page";
+export * from "./history";

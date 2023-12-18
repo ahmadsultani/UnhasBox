@@ -1,17 +1,34 @@
-import { IonButton, IonChip, IonIcon, IonText } from "@ionic/react";
+import { IonButton, IonChip, IonIcon, IonSpinner, IonText } from "@ionic/react";
 
 import { MainLayout } from "@/layouts/MainLayout";
 import { BlogCard } from "@/components/Blog";
-
-import { blogs } from "@/data/fakeBlogData";
 
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { paperPlane } from "ionicons/icons";
 
 import "@/styles/blog.css";
+import { getAllBlog } from "@/services/blog";
+import { useQuery } from "@tanstack/react-query";
+import { useMemo, useState } from "react";
 
 export const Blog: React.FC = () => {
   const isMobile = useMediaQuery("(max-width: 768px)");
+
+  const {
+    data: blogs,
+    isLoading: isLoadingBlogs,
+    isError: isErrorBlogs,
+  } = useQuery({
+    queryKey: ["blog"],
+    queryFn: getAllBlog,
+  });
+
+  const [email, setEmail] = useState("");
+  const message = useMemo(
+    () =>
+      `Hello, I would like to subscribe to your newsletter. My email is ${email}`,
+    [email],
+  );
 
   return (
     <MainLayout>
@@ -31,11 +48,16 @@ export const Blog: React.FC = () => {
             </IonText>
           </section>
           <section className="blog__email-input">
-            <input placeholder="Enter your email address" />
+            <input
+              placeholder="Enter your email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
             <IonButton
               shape="round"
               size="small"
               fill={isMobile ? "clear" : "solid"}
+              href={`mailto:${email}?subject=Subscribe%20to%20UnhasBox%20Newsletter&body=${message}`}
             >
               {isMobile ? (
                 <IonIcon slot="icon-only" icon={paperPlane} />
@@ -62,18 +84,49 @@ export const Blog: React.FC = () => {
             </IonChip>
           </section>
         </header>
-        <main className="blog__container ion-padding">
-          {blogs.map((blog) => (
-            <BlogCard
-              key={blog.id}
-              slug={blog.slug}
-              title={blog.title}
-              tags={blog.tags}
-              content={blog.content}
-              image={blog.image}
+        {isLoadingBlogs ? (
+          <div className="empty-container">
+            <IonSpinner
+              name="crescent"
+              color="primary"
+              style={{ marginTop: "-48px", transform: "scale(1.4)" }}
             />
-          ))}
-        </main>
+          </div>
+        ) : isErrorBlogs ? (
+          <div className="empty-container">
+            <IonText>
+              <p
+                className="ion-text-center"
+                style={{ fontSize: "1.5em", fontWeight: 600 }}
+              >
+                Something went wrong!
+              </p>
+            </IonText>
+          </div>
+        ) : blogs && blogs.length > 0 ? (
+          <main className="blog__container ion-padding">
+            {blogs.map((blog) => (
+              <BlogCard
+                key={blog.id}
+                slug={blog.id}
+                title={blog.title}
+                content={blog.content}
+                image={blog.thumbnail}
+                tags={blog.tags}
+                author={blog.author}
+                createdAt={blog.createdAt}
+              />
+            ))}
+          </main>
+        ) : (
+          <div className="empty-container">
+            <IonText className="ion-text-center">
+              <p style={{ fontSize: "1.5em", fontWeight: 600 }}>
+                No Blogs found!
+              </p>
+            </IonText>
+          </div>
+        )}
       </section>
     </MainLayout>
   );

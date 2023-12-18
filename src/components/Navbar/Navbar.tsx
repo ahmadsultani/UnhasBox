@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import {
   IonHeader,
   IonMenuButton,
@@ -9,22 +8,19 @@ import {
 
 import "../../styles/navbar.css";
 import { Navitems } from "./Navitems";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 export const Navbar: React.FC = () => {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
-  useEffect(() => {
-    window.addEventListener("resize", () => {
-      setWindowWidth(window.innerWidth);
-    });
-  }, []);
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   return (
     <IonHeader>
-      {windowWidth <= 1024 ? (
-        <IonToolbar className="ion-padding-horizontal">
+      {!isDesktop ? (
+        <IonToolbar>
           <IonTitle slot="start">
-            <IonText color="dark navbar__title">UnhasBox</IonText>
+            <IonText color="dark" className="ion-padding-start navbar__title">
+              UnhasBox
+            </IonText>
           </IonTitle>
           <IonMenuButton slot="end"></IonMenuButton>
         </IonToolbar>

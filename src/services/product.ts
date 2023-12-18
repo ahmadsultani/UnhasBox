@@ -1,20 +1,27 @@
 import { db } from "@/config/firebase";
 import { TCategory } from "@/types/category.type";
+import { TProductForm, TUpdateProductParams } from "@/types/form.type";
 import { TProduct } from "@/types/product.type";
+import { uploadAndGetImgUrl } from "@/utils/image";
 import {
   DocumentReference,
+  addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
+  serverTimestamp,
+  updateDoc,
 } from "firebase/firestore";
+import { checkFavoriteExists } from "./favorite";
 
 export const getAllProduct = async () => {
   const querySnapshot = await getDocs(collection(db, "product"));
   const products: TProduct[] = [];
 
   const productPromises = querySnapshot.docs.map(async (doc) => {
-    const data = doc.data() as TProduct;
+    const data = doc.data();
     const categoryRef = doc.data().category as DocumentReference;
     const categorySnap = await getDoc(categoryRef);
     const categoryData = categorySnap.data() as TCategory;
@@ -24,7 +31,12 @@ export const getAllProduct = async () => {
       id: categorySnap.id,
     };
 
-    return { ...data, id: doc.id, category };
+    data.createdAt = data.createdAt.toDate();
+    data.updatedAt = data.updatedAt.toDate();
+
+    const isFavorite = await checkFavoriteExists(doc.id);
+
+    return { ...data, id: doc.id, category, isFavorite } as TProduct;
   });
 
   const productResults = await Promise.all(productPromises);
@@ -52,7 +64,48 @@ export const getOneProduct = async (id: string) => {
 
   const category = categorySnap.data() as TCategory;
 
-  const product: TProduct = { ...data, id: docRef.id, category };
+  const isFavorite = await checkFavoriteExists(id);
+
+  const product: TProduct = { ...data, id, category, isFavorite };
 
   return product;
+};
+
+export const createProduct = async (product: TProductForm) => {
+  const categoryRef = doc(db, "category", product.category);
+  const timestamp = serverTimestamp();
+
+  let thumbnail = "";
+
+  if (product.thumbnail) {
+    thumbnail = await uploadAndGetImgUrl(product.thumbnail, "product");
+  }
+
+  await addDoc(collection(db, "product"), {
+    ...product,
+    thumbnail,
+    sold: 0,
+    rating: 0,
+    category: categoryRef,
+    createdAt: timestamp,
+    updatedAt: timestamp,
+  });
+};
+
+export const updateProduct = async ({ id, product }: TUpdateProductParams) => {
+  const docRef = doc(db, "product", id);
+  const categoryRef = doc(db, "category", product.category);
+  const timestamp = serverTimestamp();
+
+  await updateDoc(docRef, {
+    ...product,
+    category: categoryRef,
+    updatedAt: timestamp,
+  });
+};
+
+export const deleteOneProduct = async (id: string) => {
+  const docRef = doc(db, "product", id);
+
+  await deleteDoc(docRef);
 };

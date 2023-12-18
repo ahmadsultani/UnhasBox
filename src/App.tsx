@@ -2,22 +2,25 @@ import { Route } from "react-router-dom";
 import { IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import {
-  Home,
-  Login,
-  Signup,
+  Admin,
+  // AdminBlog,
+  AdminHistoryPurchase,
+  AdminProduct,
+  // Blog,
+  // BlogDetail,
   Cart,
   Favorite,
-  _404,
-  Blog,
-  BlogDetail,
+  Home,
+  Login,
+  OrderHistory,
   Product,
   ProductDetail,
   Profile,
+  Signup,
   SuccessCheckout,
-  Admin,
-  AdminProduct,
-  AdminBlog,
-  AdminHistoryPurchase,
+  _404,
+  // AdminBlogCreate,
+  // AdminBlogEdit,
 } from "./pages";
 
 /* Core CSS required for Ionic components to work properly */
@@ -42,8 +45,13 @@ import "./theme/variables.css";
 /* Global CSS */
 import "./styles/globals.css";
 import { Logout } from "./pages/logout";
+import { AdminOnly } from "./middleware/admin.middleware";
+import { AdminCategory, AdminLogin } from "./pages/admin";
+import { RequireAuth } from "./middleware/auth.middleware";
 
-setupIonicReact();
+setupIonicReact({
+  animated: true,
+});
 
 const App: React.FC = () => (
   <IonApp>
@@ -55,21 +63,28 @@ const App: React.FC = () => (
         <Route exact path="/login">
           <Login />
         </Route>
+        <Route exact path="/login/admin">
+          <AdminLogin />
+        </Route>
         <Route exact path="/signup">
           <Signup />
         </Route>
         <Route exact path="/cart">
-          <Cart />
+          <RequireAuth>
+            <Cart />
+          </RequireAuth>
         </Route>
         <Route exact path="/favorite">
-          <Favorite />
+          <RequireAuth>
+            <Favorite />
+          </RequireAuth>
         </Route>
-        <Route exact path="/blog">
+        {/* <Route exact path="/blog">
           <Blog />
         </Route>
         <Route path="/blog/:id">
           <BlogDetail />
-        </Route>
+        </Route> */}
         <Route exact path="/product">
           <Product />
         </Route>
@@ -77,22 +92,47 @@ const App: React.FC = () => (
           <ProductDetail />
         </Route>
         <Route path="/profile">
-          <Profile />
+          <RequireAuth>
+            <Profile />
+          </RequireAuth>
         </Route>
         <Route exact path="/success-checkout">
-          <SuccessCheckout />
+          <RequireAuth>
+            <SuccessCheckout />
+          </RequireAuth>
+        </Route>
+        <Route exact path="/order">
+          <RequireAuth>
+            <OrderHistory />
+          </RequireAuth>
         </Route>
         <Route exact path="/admin">
-          <Admin />
+          <AdminOnly>
+            <Admin />
+          </AdminOnly>
         </Route>
         <Route path="/admin/product">
           <AdminProduct />
         </Route>
-        <Route path="/admin/blog">
-          <AdminBlog />
+        <Route path="/admin/category">
+          <AdminOnly>
+            <AdminCategory />
+          </AdminOnly>
         </Route>
+        {/* <Route path="/admin/blog/create">
+          <AdminOnly>
+            <AdminBlogCreate />
+          </AdminOnly>
+        </Route>
+        <Route path="/admin/blog/edit/:id">
+          <AdminOnly>
+            <AdminBlogEdit />
+          </AdminOnly>
+        </Route> */}
         <Route path="/admin/history-purchase">
-          <AdminHistoryPurchase />
+          <AdminOnly>
+            <AdminHistoryPurchase />
+          </AdminOnly>
         </Route>
         <Route path="/logout">
           <Logout />

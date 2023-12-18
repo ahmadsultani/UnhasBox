@@ -1,5 +1,5 @@
-import { IonButton, IonChip, IonIcon, IonImg, IonText } from "@ionic/react";
-import { arrowForward } from "ionicons/icons";
+import { formatToDayAgo } from "@/utils/formatter";
+import { IonChip, IonImg, IonItem, IonText } from "@ionic/react";
 
 interface BlogCardProps {
   slug: string;
@@ -7,6 +7,8 @@ interface BlogCardProps {
   tags: string[];
   content: string;
   image: string;
+  author: string;
+  createdAt: string;
 }
 
 export const BlogCard: React.FC<BlogCardProps> = ({
@@ -15,8 +17,9 @@ export const BlogCard: React.FC<BlogCardProps> = ({
   tags,
   content,
   image,
+  author,
+  createdAt,
 }) => {
-
   return (
     <section className="blog__card">
       <IonImg
@@ -27,16 +30,20 @@ export const BlogCard: React.FC<BlogCardProps> = ({
         className="blog__card-img"
       />
 
-      <main className="blog__card-content">
+      <IonItem
+        routerLink={`/blog/${slug}`}
+        lines="none"
+        className="blog__card-content"
+      >
         <section className="blog__card-content-info">
           <IonText>
-            <p>Sultani</p>
+            <p>{author}</p>
           </IonText>
           <IonText>
             <p>&#x2022;</p>
           </IonText>
           <IonText>
-            <p>1 day ago</p>
+            <p>{formatToDayAgo(createdAt)}</p>
           </IonText>
         </section>
 
@@ -44,10 +51,6 @@ export const BlogCard: React.FC<BlogCardProps> = ({
           <IonText>
             <h3 className="blog__card-content-title">{title}</h3>
           </IonText>
-
-          <IonButton size="small" fill="clear" color="dark" shape="round" href={`blog/${slug}`}>
-            <IonIcon slot="icon-only" icon={arrowForward} />
-          </IonButton>
         </header>
 
         <IonText>
@@ -55,13 +58,13 @@ export const BlogCard: React.FC<BlogCardProps> = ({
         </IonText>
 
         <section className="blog__card-tags-container">
-          {tags.map((tag) => (
-            <IonChip color="dark" className="blog__card-chip">
+          {tags.map((tag, index) => (
+            <IonChip key={index} color="dark" className="blog__card-chip">
               <IonText className="ion-text-center">{tag}</IonText>
             </IonChip>
           ))}
         </section>
-      </main>
+      </IonItem>
     </section>
   );
 };

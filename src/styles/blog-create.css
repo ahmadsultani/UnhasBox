@@ -1,0 +1,9 @@
+.blog-create {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.blog-create__editor {
+  margin-top: 20px;
+}

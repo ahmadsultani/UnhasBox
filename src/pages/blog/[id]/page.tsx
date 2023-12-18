@@ -1,15 +1,27 @@
-import { IonButton, IonIcon, IonImg, IonText } from "@ionic/react";
+import { IonButton, IonIcon, IonImg, IonSpinner, IonText } from "@ionic/react";
 
 import { MainLayout } from "@/layouts/MainLayout";
 import { BlogCard } from "@/components/Blog";
 
-import { blogs } from "@/data/fakeBlogData";
-
 import { arrowBack } from "ionicons/icons";
 
 import "@/styles/blog-detail.css";
+import { useHistory } from "react-router";
+import { getAllBlog } from "@/services/blog";
+import { useQuery } from "@tanstack/react-query";
 
 export const BlogDetail: React.FC = () => {
+  const history = useHistory();
+
+  const {
+    data: blogs,
+    isLoading: isLoadingBlogs,
+    isError: isErrorBlogs,
+  } = useQuery({
+    queryKey: ["blog"],
+    queryFn: getAllBlog,
+  });
+
   return (
     <MainLayout>
       <main className="blog-detail ">
@@ -20,7 +32,7 @@ export const BlogDetail: React.FC = () => {
               fill="clear"
               color="dark"
               className="ion-no-padding"
-              href="/blog"
+              onClick={() => history.goBack()}
             >
               <IonIcon icon={arrowBack} slot="start" />
               <p className="ion-padding-start">Back to Blogs</p>
@@ -28,7 +40,8 @@ export const BlogDetail: React.FC = () => {
           </section>
           <IonText color="dark">
             <h1 className="blog-detail__title ">
-              Informatics Engineering Strengthen It's Student Far and Beyond
+              Informatics Engineering Strengthen It&apos;s Student Far and
+              Beyond
             </h1>
           </IonText>
           <IonImg
@@ -96,18 +109,58 @@ export const BlogDetail: React.FC = () => {
           </main>
           <footer className="blog-detail__footer">
             <h3 className="blog-detail__footer-title">Related Content</h3>
-            <main className="blog-detail__footer-content">
-              {blogs.slice(0, 3).map((blog) => (
-                <BlogCard
-                  key={blog.id}
-                  slug={blog.slug}
-                  title={blog.title}
-                  image="https://www.adorama.com/alc/wp-content/uploads/2021/06/mountain-photography-tips-tricks-feature.jpg"
-                  content={blog.content}
-                  tags={blog.tags}
+            {isLoadingBlogs ? (
+              <div className="empty-container">
+                <IonSpinner
+                  name="crescent"
+                  color="primary"
+                  style={{ marginTop: "-48px", transform: "scale(1.4)" }}
                 />
-              ))}
-            </main>
+              </div>
+            ) : isErrorBlogs ? (
+              <div className="empty-container">
+                <IonText>
+                  <p
+                    className="ion-text-center"
+                    style={{
+                      marginTop: "3em",
+                      fontSize: "1.5em",
+                      fontWeight: 600,
+                    }}
+                  >
+                    Something went wrong!
+                  </p>
+                </IonText>
+              </div>
+            ) : blogs && blogs.length > 0 ? (
+              <main className="blog-detail__footer-content">
+                {blogs.map((blog) => (
+                  <BlogCard
+                    key={blog.id}
+                    slug={blog.id}
+                    title={blog.title}
+                    content={blog.content}
+                    image={blog.thumbnail}
+                    tags={blog.tags}
+                    author={blog.author}
+                    createdAt={blog.createdAt}
+                  />
+                ))}
+              </main>
+            ) : (
+              <div className="empty-container">
+                <IonText className="ion-text-center">
+                  <p
+                    style={{
+                      fontSize: "1.5em",
+                      fontWeight: 600,
+                    }}
+                  >
+                    No Blogs found!
+                  </p>
+                </IonText>
+              </div>
+            )}
           </footer>
         </section>
       </main>

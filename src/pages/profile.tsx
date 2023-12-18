@@ -1,5 +1,3 @@
-import { ChangeEvent, useState } from "react";
-
 import {
   IonRow,
   IonCol,
@@ -17,20 +15,54 @@ import { add, arrowForward } from "ionicons/icons";
 
 import "@/styles/profile.css";
 import { CustomAvatar } from "@/components/CustomAvatar";
-import { getCurrentUser } from "@/services/auth";
-import { useQuery } from "@tanstack/react-query";
+import Cookies from "js-cookie";
+import { TUser } from "@/types/user.type";
+import { useMutation } from "@tanstack/react-query";
+import { Controller, useForm } from "react-hook-form";
+import { TUpdateProfileForm } from "@/types/form.type";
+import { updateUser } from "@/services/user";
+import { useToast } from "@/hooks/useToast";
+import { useState } from "react";
 
 export const Profile: React.FC = () => {
-  const { data } = useQuery({
-    queryKey: ["user"],
-    queryFn: getCurrentUser,
+  const userCookies = Cookies.get("user");
+  const user: TUser = userCookies ? JSON.parse(userCookies) : undefined;
+  const { successToast, errorToast } = useToast();
+
+  const { mutateAsync } = useMutation({
+    mutationKey: ["updateProfile"],
+    mutationFn: updateUser,
+    onSuccess: (data) => {
+      const newUser = {
+        ...user,
+        ...data,
+      } as TUser;
+
+      Cookies.set("user", JSON.stringify(newUser));
+      successToast("Profile updated successfully");
+    },
+    onError: (error) => {
+      errorToast(error.message);
+    },
   });
+
+  const { control, handleSubmit, setValue, formState, reset } =
+    useForm<TUpdateProfileForm>({
+      values: {
+        firstName: user?.firstName || "",
+        lastName: user?.lastName || "",
+        address: user?.address || "",
+        phoneNumber: user?.phoneNumber || "",
+      },
+    });
 
   const [selectedFile, setSelectedFile] = useState<string>();
 
-  const handleFileInputChange = (e: ChangeEvent) => {
+  const handleFileInputChange = (e: React.ChangeEvent) => {
     const target = e.target as HTMLInputElement;
     const file: File = (target.files as FileList)[0];
+
+    setValue("photoURL", file);
 
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -42,14 +74,17 @@ export const Profile: React.FC = () => {
 
   return (
     <MainLayout>
-      <main className="profile">
+      <form
+        className="profile"
+        onSubmit={handleSubmit((data) => mutateAsync(data))}
+      >
         <IonGrid className="profile__container">
           <IonRow>
             <IonCol size="12" className="ion-text-center profile__header">
               <div className="profile__avatar-input">
                 <CustomAvatar
-                  src={selectedFile}
-                  name={data?.firstName}
+                  src={selectedFile || user?.photoURL || ""}
+                  name={user?.firstName}
                   size="80px"
                 />
                 <input
@@ -81,65 +116,109 @@ export const Profile: React.FC = () => {
               <IonList className="ion-padding profile__form-container">
                 <IonInput
                   autocomplete="off"
-                  label="Username"
-                  labelPlacement="floating"
-                ></IonInput>
-                <IonInput
-                  autocomplete="off"
                   label="Email"
                   labelPlacement="floating"
-                ></IonInput>
-                <IonInput
-                  autocomplete="off"
-                  label="Phone Number"
-                  labelPlacement="floating"
-                ></IonInput>
-                <IonButton
-                  className="ion-margin-top"
-                  fill="solid"
-                  slot="end"
-                  size="default"
-                >
-                  Save
-                </IonButton>
+                  value={user?.email}
+                  disabled
+                />
+
+                <Controller
+                  control={control}
+                  name="firstName"
+                  rules={{ required: "First name is required" }}
+                  render={({ field: { onChange, value } }) => (
+                    <IonInput
+                      autocomplete="off"
+                      label="First Name"
+                      labelPlacement="floating"
+                      value={value}
+                      onIonChange={onChange}
+                      required
+                    />
+                  )}
+                />
+                <Controller
+                  control={control}
+                  name="lastName"
+                  rules={{ required: "Last name is required" }}
+                  render={({ field: { onChange, value } }) => (
+                    <IonInput
+                      autocomplete="off"
+                      label="Last Name"
+                      labelPlacement="floating"
+                      value={value}
+                      onIonChange={onChange}
+                      required
+                    />
+                  )}
+                />
+
+                <Controller
+                  control={control}
+                  name="phoneNumber"
+                  render={({ field: { onChange, value } }) => (
+                    <IonInput
+                      autocomplete="off"
+                      label="Phone Number"
+                      labelPlacement="floating"
+                      value={value}
+                      onIonChange={onChange}
+                    />
+                  )}
+                />
+
+                <Controller
+                  control={control}
+                  name="address"
+                  render={({ field: { onChange, value } }) => (
+                    <IonInput
+                      autocomplete="off"
+                      label="Address"
+                      labelPlacement="floating"
+                      value={value}
+                      onIonChange={onChange}
+                    />
+                  )}
+                />
               </IonList>
             </IonCol>
           </IonRow>
 
           <IonRow>
-            <IonCol size="12" className="profile__section">
-              <IonText>
-                <h1 className="profile__section-title">Change Password</h1>
-              </IonText>
-              <IonList className="ion-padding profile__form-container">
-                <IonInput
-                  autocomplete="off"
-                  label="Old password"
-                  labelPlacement="floating"
-                ></IonInput>
-                <IonInput
-                  autocomplete="off"
-                  label="New password"
-                  labelPlacement="floating"
-                ></IonInput>
-                <IonInput
-                  autocomplete="off"
-                  label="Confirm password"
-                  labelPlacement="floating"
-                ></IonInput>
+            <IonCol
+              size="12"
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                gap: "12px",
+              }}
+              className="ion-margin-top"
+            >
+              <IonButton
+                fill="solid"
+                size="default"
+                type="submit"
+                disabled={!formState.isDirty && !selectedFile}
+              >
+                <IonText className="ion-padding-horizontal">Save</IonText>
+              </IonButton>
+              {(formState.isDirty || selectedFile) && (
                 <IonButton
-                  className="ion-margin-top"
                   fill="solid"
-                  slot="end"
                   size="default"
+                  color="danger"
+                  onClick={() => {
+                    reset();
+                    setSelectedFile(undefined);
+                  }}
                 >
-                  Save
+                  <IonText className="ion-padding-horizontal">Cancel</IonText>
                 </IonButton>
-              </IonList>
+              )}
             </IonCol>
           </IonRow>
         </IonGrid>
-      </main>
+      </form>
     </MainLayout>
   );
 };

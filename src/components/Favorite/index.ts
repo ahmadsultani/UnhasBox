@@ -1,1 +1,1 @@
-export * from "./EmptyStateFav"
+export * from "./EmptyStateFav";

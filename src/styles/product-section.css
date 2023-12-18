@@ -5,14 +5,14 @@
   font-size: 16px;
 }
 
-.product-section__title{
+.product-section__title {
   font-size: 28px;
   font-weight: 600;
   padding: 0;
   margin: 16px 0 0 0;
 }
 
-.product-section__container{
+.product-section__container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 32px;
@@ -21,7 +21,7 @@
   row-gap: 32px;
 }
 
-.product-section__button{
+.product-section__button {
   margin: 8px 0 0 0;
 }
 

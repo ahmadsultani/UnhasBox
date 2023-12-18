@@ -20,3 +20,16 @@ ion-split-pane {
   justify-content: right;
   gap: 8px;
 }
+
+.admin__hello {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.admin__hello-text {
+  font-size: 2em;
+  font-weight: 700;
+  text-align: center;
+}
